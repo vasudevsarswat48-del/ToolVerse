@@ -15,7 +15,7 @@ export default function CompressPdf() {
       const bytes = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(bytes);
       const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+     const blob = new Blob([pdfBytes as unknown as Uint8Array<ArrayBuffer>], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
