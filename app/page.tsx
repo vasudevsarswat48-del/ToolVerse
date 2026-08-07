@@ -19,7 +19,7 @@ export default function Home() {
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight font-[family-name:var(--font-outfit)] leading-[1.15]">
             <span className="font-[family-name:var(--font-cursive)] text-6xl sm:text-8xl lg:text-9xl bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent block pb-2">
-              Toolingo
+              TOOLINGO
             </span>
             <span className="bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
               Empowering Your Digital Workflow
