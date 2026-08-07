@@ -26,15 +26,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${outfit.variable} ${cursiveScript.variable}`}>
       <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJKRWDKRFV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RJKRWDKRFV');
-</script>
+       {/* Google tag (gtag.js) */}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RJKRWDKRFV"></script>
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-RJKRWDKRFV');
+        `,
+      }}
+    />
    <meta name="google-site-verification" content="qSYK0lXMzgnj8mqTSpttWAPSK8jzxe8_x7EWCZ25SVE" />
   </head>
       <body className="font-sans antialiased bg-[#070913] text-slate-100 min-h-screen">
