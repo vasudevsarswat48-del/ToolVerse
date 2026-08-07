@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${outfit.variable} ${cursiveScript.variable}`}>
+      <head>
+    <meta name="google-site-verification" content="your_unique_verification_code_here" />
+  </head>
       <body className="font-sans antialiased bg-[#070913] text-slate-100 min-h-screen">
         <Navbar />
         {children}
