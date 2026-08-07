@@ -14,7 +14,7 @@ const cursiveScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "ToolVerse Collection",
+  title: "Toolingo:Tools Collection",
   description: "High-performance developer utilities and document tools.",
 };
 
