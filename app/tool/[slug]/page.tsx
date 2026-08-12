@@ -108,7 +108,7 @@ const toolComponents: Record<string, React.ReactNode> = {
   "aspect-ratio": <AspectRatioCalculator />,
   "px-to-rem": <PxToRemorEMConverter />,
   "unix-timestamp": <UnixTimestampConverter />,
-  "chmod-calculator": <ChmodPermissinCalculator />,
+  "chmod-calculator": <ChmodPermissionCalculator />,
   "cron-parser": <CronExpressionParser />,
 };
 
