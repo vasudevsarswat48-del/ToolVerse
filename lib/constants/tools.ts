@@ -2,6 +2,9 @@ export interface Tool {
   name: string;
   slug: string;
   description: string;
+  category?: 'Developer' | 'Text' | 'Web' | 'Image' | 'Calculators' | 'PDF' | string;
+  // If old tools required other properties (like icon or component), mark them optional too:
+  // icon?: any;
 }
 
 export const ALL_TOOLS: Tool[] = [
@@ -75,4 +78,40 @@ export const ALL_TOOLS: Tool[] = [
     slug: "pdf-to-excel",
     description: "Convert tabular PDF data into Excel spreadsheet format.",
   },
+{ slug: "base64", name: "Base64 Encoder / Decoder", description: "Encode text to Base64 or decode back instantly.", category: "Developer" },
+  { slug: "jwt-decoder", name: "JWT Decoder", description: "Decode and inspect JSON Web Tokens safely.", category: "Developer" },
+  { slug: "diff-checker", name: "Diff / Text Compare", description: "Compare two pieces of text side-by-side.", category: "Developer" },
+  { slug: "sql-formatter", name: "SQL Formatter", description: "Beautify and format messy SQL queries.", category: "Developer" },
+  { slug: "regex-tester", name: "Regex Tester", description: "Test regular expressions with real-time matching.", category: "Developer" },
+  { slug: "markdown-editor", name: "Markdown Editor & Previewer", description: "Write markdown and preview rendered HTML live.", category: "Developer" },
+  { slug: "code-minifier", name: "Code Minifier & Unminifier", description: "Minify or unminify HTML, CSS, and JS code.", category: "Developer" },
+  { slug: "curl-to-fetch", name: "cURL to Fetch Converter", description: "Convert cURL commands into JavaScript fetch code.", category: "Developer" },
+
+  // Text & String Manipulation
+  { slug: "case-converter", name: "Case Converter", description: "Switch text between uppercase, camelCase, snake_case, etc.", category: "Text" },
+  { slug: "slug-generator", name: "Slug Generator", description: "Convert titles into clean URL slugs.", category: "Text" },
+  { slug: "lorem-ipsum", name: "Lorem Ipsum Generator", description: "Generate placeholder text paragraphs.", category: "Text" },
+  { slug: "string-inspector", name: "String Inspector & Byte Counter", description: "Count characters, words, lines, and bytes.", category: "Text" },
+  { slug: "duplicate-remover", name: "Duplicate Line Remover", description: "Clean up duplicate rows of text instantly.", category: "Text" },
+
+  // Web & Network Utilities
+  { slug: "url-encoder", name: "URL Encoder / Decoder", description: "Encode and decode special characters in URLs.", category: "Web" },
+  { slug: "url-parser", name: "URL Query Parser", description: "Parse URL query parameters into structured JSON.", category: "Web" },
+  { slug: "meta-generator", name: "Meta Tag & OpenGraph Generator", description: "Generate SEO meta tags for your web pages.", category: "Web" },
+  { slug: "user-agent", name: "User-Agent Parser", description: "Parse browser and device details from user strings.", category: "Web" },
+  { slug: "hash-generator", name: "Hash Generator", description: "Generate MD5 and SHA-256 hashes.", category: "Web" },
+
+  // Image & Media Processing
+  { slug: "image-compressor", name: "Image Compressor", description: "Compress PNG, JPEG, and WebP images locally.", category: "Image" },
+  { slug: "image-converter", name: "Image Converter", description: "Convert image formats between PNG, JPG, and WebP.", category: "Image" },
+  { slug: "image-resizer", name: "Image Resizer & Cropper", description: "Resize images to precise dimensions.", category: "Image" },
+  { slug: "svg-minifier", name: "SVG Minifier", description: "Optimize and minify SVG code files.", category: "Image" },
+  { slug: "favicon-generator", name: "Favicon Generator", description: "Create multi-size favicons from source images.", category: "Image" },
+
+  // Calculators & Converters
+  { slug: "aspect-ratio", name: "Aspect Ratio Calculator", description: "Calculate proportions for images and videos.", category: "Calculators" },
+  { slug: "px-to-rem", name: "PX to REM / EM Converter", description: "Convert pixel values to flexible CSS units.", category: "Calculators" },
+  { slug: "unix-timestamp", name: "Unix Timestamp Converter", description: "Convert timestamps to human-readable dates.", category: "Calculators" },
+  { slug: "chmod-calculator", name: "Chmod Permissions Calculator", description: "Calculate Linux file permissions numeric codes.", category: "Calculators" },
+  { slug: "cron-parser", name: "Cron Expression Parser", description: "Translate cron schedules into plain English.", category: "Calculators" }
 ];
