@@ -37,60 +37,67 @@ body {
 }
 /* Clean Print Styles for A4 Tax Invoice */
 @media print {
-  /* Prevent multi-page printing */
+  /* 1. Force pure white page & reset canvas */
   html, body {
-    height: 100vh !important;
-    overflow: hidden !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    min-height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow: visible !important;
   }
 
-  body * {
-    visibility: hidden !important;
+  /* 2. Hide everything outside the invoice */
+  body > * {
+    display: none !important;
   }
 
-  #printable-invoice,
+  /* 3. Force main page layout wrappers to be white and unstyled */
+  main, div, section, header, nav, footer {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 4. Ensure target invoice takes up the full page */
+  #printable-invoice {
+    display: flex !important;
+    visibility: visible !important;
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 210mm !important;
+    margin: 0 auto !important;
+    padding: 5mm !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box !important;
+  }
+
   #printable-invoice * {
     visibility: visible !important;
   }
 
-  /* Exact A4 single-page layout */
-  #printable-invoice {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 210mm !important;
-    max-height: 297mm !important;
-    box-sizing: border-box !important;
-    margin: 0 !important;
-    padding: 8mm !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    box-shadow: none !important;
-    page-break-inside: avoid !important;
-    page-break-after: avoid !important;
-    page-break-before: avoid !important;
-  }
-
-  /* Flatten inputs into print text */
+  /* 5. Clear inputs for paper print */
   #printable-invoice input,
   #printable-invoice textarea {
     border: none !important;
     background: transparent !important;
-    padding: 0 !important;
-    appearance: none !important;
     outline: none !important;
-    resize: none !important;
+    box-shadow: none !important;
   }
 
-  /* Hide interactive elements */
+  /* 6. Remove UI controls */
   .no-print {
     display: none !important;
   }
 
-  /* Single-page A4 print setup */
+  /* 7. Native A4 Page Definition */
   @page {
     size: A4 portrait;
-    margin: 0;
+    margin: 8mm;
   }
 }
