@@ -37,6 +37,14 @@ body {
 }
 /* Clean Print Styles for A4 Tax Invoice */
 @media print {
+  /* Prevent multi-page printing */
+  html, body {
+    height: 100vh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   body * {
     visibility: hidden !important;
   }
@@ -46,19 +54,25 @@ body {
     visibility: visible !important;
   }
 
+  /* Exact A4 single-page layout */
   #printable-invoice {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
     width: 210mm !important;
-    min-height: 297mm !important;
+    max-height: 297mm !important;
+    box-sizing: border-box !important;
     margin: 0 !important;
-    padding: 10mm !important;
+    padding: 8mm !important;
     background-color: #ffffff !important;
     color: #000000 !important;
     box-shadow: none !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
   }
 
+  /* Flatten inputs into print text */
   #printable-invoice input,
   #printable-invoice textarea {
     border: none !important;
@@ -69,10 +83,12 @@ body {
     resize: none !important;
   }
 
+  /* Hide interactive elements */
   .no-print {
     display: none !important;
   }
 
+  /* Single-page A4 print setup */
   @page {
     size: A4 portrait;
     margin: 0;
