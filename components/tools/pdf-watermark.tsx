@@ -62,8 +62,8 @@ export default function PdfWatermark() {
         });
       }
 
-      const pdfBytes = await pdfDoc.save();
-const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });;
+      const watermarkedpdfBytes = await pdfDoc.save();
+const blob = new Blob([watermarkedpdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });;
       
       const url = URL.createObjectURL(blob);
 
