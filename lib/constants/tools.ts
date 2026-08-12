@@ -113,7 +113,7 @@ export const ALL_TOOLS: Tool[] = [
   { slug: "px-to-rem", name: "PX to REM or EM Converter", description: "Convert pixel values to flexible CSS units.", category: "Calculators" },
   { slug: "unix-timestamp", name: "Unix Timestamp Converter", description: "Convert timestamps to human-readable dates.", category: "Calculators" },
   { slug: "chmod-calculator", name: "Chmod Permissions Calculator", description: "Calculate Linux file permissions numeric codes.", category: "Calculators" },
-  { slug: "cron-parser", name: "Cron Expression Parser", description: "Translate cron schedules into plain English.", category: "Calculators" }
+  { slug: "cron-parser", name: "Cron Expression Parser", description: "Translate cron schedules into plain English.", category: "Calculators" },
 // Some More
  {
     slug: "invoice-generator",
