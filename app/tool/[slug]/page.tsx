@@ -81,7 +81,7 @@ const toolComponents: Record<string, React.ReactNode> = {
   "regex-tester": <RegexTester />,
   "markdown-editor": <MarkdownEditorandPreviewer />,
   "code-minifier": <CodeMinifierandUnminifier />,
-  "curl-to-converter": <cURLtoFetchConverter />,
+  "curl-to-converter": <CURLtoFetchConverter />,
 
   // Text & String Manipulation
   "case-converter": <CaseConverter />,
@@ -108,7 +108,7 @@ const toolComponents: Record<string, React.ReactNode> = {
   "aspect-ratio": <AspectRatioCalculator />,
   "px-to-rem": <PxToRemorEMConverter />,
   "unix-timestamp": <UnixTimestampConverter />,
-  "chmod-calculator": <ChmodPermissionCalculator />,
+  "chmod-calculator": <ChmodPermissionsCalculator />,
   "cron-parser": <CronExpressionParser />,
 };
 
