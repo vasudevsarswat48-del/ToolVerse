@@ -1,268 +1,217 @@
 "use client";
 
 import React, { useState } from "react";
-import { Printer, Plus, Trash2, RotateCcw } from "lucide-react";
+import { Printer, Plus, Trash2 } from "lucide-react";
 
 interface LineItem {
   id: string;
   description: string;
-  hours: number;
+  hsnCode: string;
+  qty: number;
   rate: number;
 }
 
-export default function ClassicInvoiceGenerator() {
-  const [companyName, setCompanyName] = useState("Your Company Name");
-  const [companySlogan, setCompanySlogan] = useState("Your Company Slogan");
-  const [companyAddress, setCompanyAddress] = useState("123 Street Address, City, ST 12345");
-  const [companyContact, setCompanyContact] = useState("Phone: (509) 555-0190 | Fax: (509) 555-0191");
+const CURRENCIES = [
+  { label: "INR (₹)", symbol: "₹" },
+  { label: "USD ($)", symbol: "$" },
+  { label: "EUR (€)", symbol: "€" },
+  { label: "GBP (£)", symbol: "£" },
+  { label: "JPY (¥)", symbol: "¥" },
+];
 
-  const [invoiceNumber, setInvoiceNumber] = useState("100");
-  const [invoiceDate, setInvoiceDate] = useState("OCTOBER 9, 2026");
+export default function TaxInvoiceGenerator() {
+  const [currency, setCurrency] = useState("₹");
+  const [businessName, setBusinessName] = useState("BUSINESS NAME");
+  const [businessAddress, setBusinessAddress] = useState("132 Street, City, State, PIN");
+  const [gstin, setGstin] = useState("AAA213465");
+  const [email, setEmail] = useState("122@gmail.com");
+  const [pan, setPan] = useState("AAA132456");
 
-  const [clientName, setClientName] = useState("[Name]");
-  const [clientCompany, setClientCompany] = useState("[Company Name]");
-  const [clientAddress, setClientAddress] = useState("[Street Address, City, ST ZIP Code]");
-  const [clientPhone, setClientPhone] = useState("[Phone]");
+  const [invoiceNo, setInvoiceNo] = useState("1234");
+  const [invoiceDate, setInvoiceDate] = useState("04-03-2026");
+  const [paymentDueDate, setPaymentDueDate] = useState("18-03-2026");
+  const [paymentMode, setPaymentMode] = useState("UPI / Bank Transfer");
 
-  const [projectDescription, setProjectDescription] = useState("[Project or service description]");
-  const [poNumber, setPoNumber] = useState("[P.O. #]");
+  const [clientName, setClientName] = useState("PARTY'S NAME");
+  const [clientAddress, setClientAddress] = useState("132 STREET, CITY, STATE - 132456");
+  const [clientEmail, setClientEmail] = useState("abc@gmail.com");
+  const [clientGstin, setClientGstin] = useState("07AAFD8457JU3");
+
+  const [cgstRate, setCgstRate] = useState(14);
+  const [sgstRate, setSgstRate] = useState(14);
+  const [balanceReceived, setBalanceReceived] = useState(0);
 
   const [items, setItems] = useState<LineItem[]>([
-    { id: "1", description: "Frontend Development & UI Design", hours: 40, rate: 75 },
-    { id: "2", description: "Database Optimization & Migration", hours: 15, rate: 90 },
-    { id: "3", description: "", hours: 0, rate: 0 },
-    { id: "4", description: "", hours: 0, rate: 0 },
-    { id: "5", description: "", hours: 0, rate: 0 },
+    { id: "1", description: "Web Development Services", hsnCode: "998314", qty: 1, rate: 1000 },
+    { id: "2", description: "UI/UX Design Concept", hsnCode: "998313", qty: 1, rate: 500 },
   ]);
 
   const handleAddItem = () => {
-    setItems([
-      ...items,
-      { id: Date.now().toString(), description: "", hours: 0, rate: 0 },
-    ]);
+    setItems([...items, { id: Date.now().toString(), description: "", hsnCode: "", qty: 1, rate: 0 }]);
   };
 
   const handleRemoveItem = (id: string) => {
-    if (items.length > 1) {
-      setItems(items.filter((item) => item.id !== id));
-    }
+    if (items.length > 1) setItems(items.filter((item) => item.id !== id));
   };
 
-  const handleItemChange = (
-    id: string,
-    field: keyof LineItem,
-    value: string | number
-  ) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    );
+  const handleItemChange = (id: string, field: keyof LineItem, value: any) => {
+    setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 
-  const totalAmount = items.reduce(
-    (sum, item) => sum + (Number(item.hours) || 0) * (Number(item.rate) || 0),
-    0
-  );
+  const subtotal = items.reduce((sum, item) => sum + (Number(item.qty) || 0) * (Number(item.rate) || 0), 0);
+  const cgstAmount = (subtotal * cgstRate) / 100;
+  const sgstAmount = (subtotal * sgstRate) / 100;
+  const grandTotal = subtotal + cgstAmount + sgstAmount;
+  const balanceDue = grandTotal - balanceReceived;
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 p-4">
-      {/* Top Action Bar (Hidden during print) */}
-      <div className="no-print flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
-        <div className="flex items-center gap-3">
+    <div className="max-w-4xl mx-auto p-4 space-y-4">
+      {/* Control Bar (Hidden when printing) */}
+      <div className="no-print flex flex-wrap items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl text-white">
+        <div className="flex items-center gap-4">
+          <label className="text-xs font-semibold text-slate-300 flex items-center gap-2">
+            Currency:
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="bg-slate-800 text-white border border-slate-700 rounded px-2 py-1 text-xs focus:outline-none"
+            >
+              {CURRENCIES.map((c) => (
+                <option key={c.symbol} value={c.symbol}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
           <button
             onClick={handleAddItem}
-            className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-3 py-2 rounded-lg border border-slate-700 transition-colors"
+            className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-3 py-1.5 rounded transition-colors"
           >
-            <Plus className="w-4 h-4 text-emerald-400" /> Add Line Item
+            <Plus className="w-3.5 h-3.5 text-emerald-400" /> Add Row
           </button>
         </div>
 
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors shadow-lg shadow-blue-500/20"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded shadow transition-colors"
         >
-          <Printer className="w-4 h-4" /> Print / Export PDF
+          <Printer className="w-4 h-4" /> Print / Save A4 PDF
         </button>
       </div>
 
-      {/* ─── PRINTABLE INVOICE CARD ─── */}
+      {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
       <div
         id="printable-invoice"
-        className="bg-white text-slate-900 p-8 sm:p-12 border border-slate-200 shadow-md rounded-lg font-sans space-y-6"
+        className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] min-h-[297mm] p-6 mx-auto flex flex-col justify-between"
       >
-        {/* Top Header Section */}
-        <div className="flex justify-between items-start">
-          <div className="space-y-1 max-w-sm">
-            <input
-              type="text"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              className="text-xl font-bold text-slate-900 w-full focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Your Company Name]"
-            />
-            <input
-              type="text"
-              value={companySlogan}
-              onChange={(e) => setCompanySlogan(e.target.value)}
-              className="text-xs italic text-slate-500 w-full focus:outline-none focus:bg-slate-50 rounded block"
-              placeholder="[Your Company Slogan]"
-            />
-            <div className="pt-2 text-xs text-slate-600 space-y-0.5">
-              <input
-                type="text"
-                value={companyAddress}
-                onChange={(e) => setCompanyAddress(e.target.value)}
-                className="w-full focus:outline-none focus:bg-slate-50 rounded"
-                placeholder="[Street Address, City, ST ZIP Code]"
-              />
-              <input
-                type="text"
-                value={companyContact}
-                onChange={(e) => setCompanyContact(e.target.value)}
-                className="w-full focus:outline-none focus:bg-slate-50 rounded"
-                placeholder="Phone & Fax Details"
-              />
+        <div>
+          {/* Header Banner */}
+          <div className="bg-[#0b2545] text-white flex justify-between items-center px-4 py-2 border-b-2 border-black font-bold text-sm">
+            <span>TAX INVOICE</span>
+            <div className="text-right text-xs space-y-0.5">
+              <div>INVOICE NO : <input value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className="bg-transparent text-white font-mono w-16 focus:outline-none" /></div>
+              <div>DATE : <input value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} className="bg-transparent text-white w-24 focus:outline-none" /></div>
             </div>
           </div>
 
-          <div className="text-right space-y-2">
-            <h1 className="text-4xl font-extrabold text-blue-600 tracking-tight">INVOICE</h1>
-            <div className="text-xs font-semibold text-slate-700 space-y-1">
-              <div className="flex items-center justify-end gap-1">
-                <span className="text-slate-400">INVOICE #:</span>
-                <input
-                  type="text"
-                  value={invoiceNumber}
-                  onChange={(e) => setInvoiceNumber(e.target.value)}
-                  className="w-16 text-right font-mono focus:outline-none focus:bg-slate-50 rounded"
-                />
+          {/* Business Header */}
+          <div className="text-center py-3 border-b-2 border-black space-y-0.5">
+            <input
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
+              className="text-xl font-extrabold text-center uppercase tracking-wide w-full focus:outline-none"
+            />
+            <input
+              value={businessAddress}
+              onChange={(e) => setBusinessAddress(e.target.value)}
+              className="text-center w-full focus:outline-none text-slate-700"
+            />
+            <div className="flex justify-center gap-4 text-[11px] text-slate-800 font-semibold pt-0.5">
+              <span>GSTIN: <input value={gstin} onChange={(e) => setGstin(e.target.value)} className="w-24 focus:outline-none" /></span>
+              <span>Email: <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-32 focus:outline-none" /></span>
+              <span>PAN NO: <input value={pan} onChange={(e) => setPan(e.target.value)} className="w-24 focus:outline-none" /></span>
+            </div>
+          </div>
+
+          {/* Bill To & Payment Due */}
+          <div className="grid grid-cols-2 border-b-2 border-black min-h-[110px]">
+            <div className="p-2 border-r-2 border-black space-y-0.5">
+              <span className="font-bold text-black uppercase block">Bill To:</span>
+              <input value={clientName} onChange={(e) => setClientName(e.target.value)} className="font-semibold w-full uppercase focus:outline-none" />
+              <textarea value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} className="w-full h-10 resize-none focus:outline-none text-slate-700" />
+              <div className="text-slate-800">Email: <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-40 focus:outline-none" /></div>
+              <div className="text-slate-800">GSTIN: <input value={clientGstin} onChange={(e) => setClientGstin(e.target.value)} className="w-36 focus:outline-none" /></div>
+            </div>
+
+            <div className="p-2 bg-[#d8ecf8] space-y-2">
+              <div>
+                <span className="font-semibold">Payment Due Date: </span>
+                <input value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} className="bg-transparent focus:outline-none" />
               </div>
-              <div className="flex items-center justify-end gap-1">
-                <span className="text-slate-400">DATE:</span>
-                <input
-                  type="text"
-                  value={invoiceDate}
-                  onChange={(e) => setInvoiceDate(e.target.value)}
-                  className="w-32 text-right focus:outline-none focus:bg-slate-50 rounded"
-                />
+              <div>
+                <span className="font-semibold">Payment Mode: </span>
+                <input value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="bg-transparent focus:outline-none" />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Info Columns (TO / FOR) */}
-        <div className="grid grid-cols-2 gap-8 text-xs pt-4">
-          {/* Client Details */}
-          <div className="space-y-1">
-            <span className="font-bold text-blue-600 uppercase tracking-wider block">TO:</span>
-            <input
-              type="text"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              className="w-full font-bold text-slate-800 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Name]"
-            />
-            <input
-              type="text"
-              value={clientCompany}
-              onChange={(e) => setClientCompany(e.target.value)}
-              className="w-full text-slate-600 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Company Name]"
-            />
-            <input
-              type="text"
-              value={clientAddress}
-              onChange={(e) => setClientAddress(e.target.value)}
-              className="w-full text-slate-600 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Street Address, City, ST ZIP Code]"
-            />
-            <input
-              type="text"
-              value={clientPhone}
-              onChange={(e) => setClientPhone(e.target.value)}
-              className="w-full text-slate-600 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Phone]"
-            />
-          </div>
-
-          {/* Project Details */}
-          <div className="space-y-1">
-            <span className="font-bold text-blue-600 uppercase tracking-wider block">FOR:</span>
-            <input
-              type="text"
-              value={projectDescription}
-              onChange={(e) => setProjectDescription(e.target.value)}
-              className="w-full text-slate-700 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[Project or service description]"
-            />
-            <input
-              type="text"
-              value={poNumber}
-              onChange={(e) => setPoNumber(e.target.value)}
-              className="w-full text-slate-700 focus:outline-none focus:bg-slate-50 rounded"
-              placeholder="[P.O. #]"
-            />
-          </div>
-        </div>
-
-        {/* Classic Bordered Table Structure */}
-        <div className="border-2 border-slate-900 overflow-hidden">
-          <table className="w-full text-left border-collapse">
+          {/* Table */}
+          <table className="w-full border-collapse border-b-2 border-black">
             <thead>
-              <tr className="border-b-2 border-slate-900 bg-slate-100 text-xs font-bold text-slate-900 uppercase">
-                <th className="p-2 border-r border-slate-900">DESCRIPTION</th>
-                <th className="p-2 border-r border-slate-900 text-center w-20">HOURS</th>
-                <th className="p-2 border-r border-slate-900 text-right w-24">RATE</th>
-                <th className="p-2 text-right w-28">AMOUNT</th>
-                <th className="p-2 w-8 no-print"></th>
+              <tr className="border-b-2 border-black text-left font-bold bg-slate-50">
+                <th className="p-2 border-r-2 border-black">Description</th>
+                <th className="p-2 border-r-2 border-black text-center w-24">HSN Code</th>
+                <th className="p-2 border-r-2 border-black text-center w-16">Qty</th>
+                <th className="p-2 border-r-2 border-black text-right w-24">Rate</th>
+                <th className="p-2 text-right w-28">Amount</th>
+                <th className="p-1 w-6 no-print"></th>
               </tr>
             </thead>
-            <tbody className="text-xs divide-y divide-slate-200">
+            <tbody className="divide-y border-black">
               {items.map((item) => {
-                const amount = (Number(item.hours) || 0) * (Number(item.rate) || 0);
+                const amount = (Number(item.qty) || 0) * (Number(item.rate) || 0);
                 return (
-                  <tr key={item.id} className="group">
-                    <td className="p-1.5 border-r border-slate-900">
+                  <tr key={item.id} className="align-top">
+                    <td className="p-2 border-r-2 border-black">
                       <input
-                        type="text"
                         value={item.description}
                         onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
-                        className="w-full focus:outline-none focus:bg-blue-50/50 p-1 rounded"
-                        placeholder="Item description..."
+                        className="w-full focus:outline-none"
+                        placeholder="Item name..."
                       />
                     </td>
-                    <td className="p-1.5 border-r border-slate-900 text-center">
+                    <td className="p-2 border-r-2 border-black text-center">
                       <input
-                        type="number"
-                        min="0"
-                        value={item.hours || ""}
-                        onChange={(e) => handleItemChange(item.id, "hours", Number(e.target.value))}
-                        className="w-full text-center focus:outline-none focus:bg-blue-50/50 p-1 rounded font-mono"
+                        value={item.hsnCode}
+                        onChange={(e) => handleItemChange(item.id, "hsnCode", e.target.value)}
+                        className="w-full text-center focus:outline-none"
                       />
                     </td>
-                    <td className="p-1.5 border-r border-slate-900 text-right">
+                    <td className="p-2 border-r-2 border-black text-center">
                       <input
                         type="number"
-                        min="0"
+                        value={item.qty || ""}
+                        onChange={(e) => handleItemChange(item.id, "qty", Number(e.target.value))}
+                        className="w-full text-center focus:outline-none"
+                      />
+                    </td>
+                    <td className="p-2 border-r-2 border-black text-right">
+                      <input
+                        type="number"
                         value={item.rate || ""}
                         onChange={(e) => handleItemChange(item.id, "rate", Number(e.target.value))}
-                        className="w-full text-right focus:outline-none focus:bg-blue-50/50 p-1 rounded font-mono"
+                        className="w-full text-right focus:outline-none"
                       />
                     </td>
-                    <td className="p-2 text-right font-mono font-medium text-slate-900">
-                      ${amount.toFixed(2)}
+                    <td className="p-2 text-right font-mono font-medium">
+                      {currency}{amount.toFixed(2)}
                     </td>
                     <td className="p-1 text-center no-print">
-                      <button
-                        onClick={() => handleRemoveItem(item.id)}
-                        className="text-slate-300 hover:text-red-500 transition-colors p-1"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
+                      <button onClick={() => handleRemoveItem(item.id)} className="text-red-500">
+                        <Trash2 className="w-3 h-3" />
                       </button>
                     </td>
                   </tr>
@@ -271,27 +220,65 @@ export default function ClassicInvoiceGenerator() {
             </tbody>
           </table>
 
-          {/* Table Total Footer Block */}
-          <div className="border-t-2 border-slate-900 flex justify-end text-xs font-bold bg-slate-50">
-            <div className="py-2 px-4 border-r border-slate-900 uppercase flex items-center">
-              TOTAL
+          {/* Tax Calculation Block */}
+          <div className="grid grid-cols-2 border-b-2 border-black">
+            <div className="p-2 border-r-2 border-black space-y-1">
+              <span className="font-bold underline block">Terms & conditions</span>
+              <ol className="list-decimal list-inside space-y-0.5 text-[11px] text-slate-700">
+                <li>Goods once sold will not be taken back.</li>
+                <li>Interest @18% p.a. charged if bill unpaid.</li>
+                <li>Subject to local jurisdiction.</li>
+              </ol>
             </div>
-            <div className="py-2 px-4 w-28 text-right font-mono text-sm text-blue-700 bg-white border-l border-slate-900">
-              ${totalAmount.toFixed(2)}
+
+            <div className="divide-y border-black font-semibold bg-[#d8ecf8]">
+              <div className="flex justify-between p-1.5">
+                <span>Total Subtotal:</span>
+                <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between p-1.5">
+                <span>Add : CGST @ {cgstRate}%</span>
+                <span className="font-mono">{currency}{cgstAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between p-1.5">
+                <span>Add : SGST @ {sgstRate}%</span>
+                <span className="font-mono">{currency}{sgstAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between p-1.5">
+                <span>Balance Received :</span>
+                <input
+                  type="number"
+                  value={balanceReceived || ""}
+                  onChange={(e) => setBalanceReceived(Number(e.target.value))}
+                  className="w-24 text-right bg-transparent border-b border-black focus:outline-none font-mono"
+                  placeholder="0.00"
+                />
+              </div>
+              <div className="flex justify-between p-1.5">
+                <span>Balance Due :</span>
+                <span className="font-mono">{currency}{balanceDue.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between p-2 bg-[#0b2545] text-white font-bold text-sm">
+                <span>Grand Total</span>
+                <span className="font-mono">{currency}{grandTotal.toFixed(2)}</span>
+              </div>
             </div>
+          </div>
+
+          {/* Total Amount in Words */}
+          <div className="p-2 border-b-2 border-black italic font-bold">
+            Total Amount ({currency} - In Words) : <span className="font-normal uppercase underline">Rupees {grandTotal.toFixed(2)} Only</span>
           </div>
         </div>
 
-        {/* Footer Payment Terms */}
-        <div className="pt-8 space-y-4 text-center text-xs text-slate-600">
-          <div className="space-y-1">
-            <p>Make all checks payable to <span className="font-bold text-slate-800">{companyName}</span></p>
-            <p>Total due in 15 days. Overdue accounts subject to a service charge of 1% per month.</p>
+        {/* Footer Authorised Signatory */}
+        <div className="pt-12 flex justify-between items-end border-t-2 border-black mt-8">
+          <div className="font-bold">
+            For : <span className="uppercase">{businessName}</span>
           </div>
-
-          <p className="text-sm font-extrabold text-blue-600 tracking-wide pt-2">
-            Thank you for your business!
-          </p>
+          <div className="text-right font-bold pt-8">
+            <p className="border-t border-black pt-1 px-4 inline-block">Authorised Signatory</p>
+          </div>
         </div>
       </div>
     </div>
