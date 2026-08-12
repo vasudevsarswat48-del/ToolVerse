@@ -17,44 +17,44 @@ import RemovePdfPages from "@/components/tools/remove-pdf-pages";
 import CompressPdf from "@/components/tools/compress-pdf";
 import PdfToWord from "@/components/tools/pdf-to-word";
 import PdfToExcel from "@/components/tools/pdf-to-excel";
-import ChmodCalculatorTool from "@/components/tools/chmod-calculator";
-import CronParserTool from "@/components/tools/cron-parser";
+import ChmodPermissionsCalculator from "@/components/tools/chmod-calculator";
+import CronExpressionParser from "@/components/tools/cron-parser";
 
 // Developer Utilities
-import Base64EncoderDecoder from "@/components/tools/base64-encoder-decoder";
+import Base64EncoderorDecoder from "@/components/tools/base64";
 import JwtDecoder from "@/components/tools/jwt-decoder";
 import DiffChecker from "@/components/tools/diff-checker";
 import SqlFormatter from "@/components/tools/sql-formatter";
 import RegexTester from "@/components/tools/regex-tester";
-import MarkdownEditor from "@/components/tools/markdown-editor";
-import CodeMinifier from "@/components/tools/code-minifier";
-import CurlConverter from "@/components/tools/curl-converter";
+import MarkdownEditorandPreviewer from "@/components/tools/markdown-editor";
+import CodeMinifierandUnminifier from "@/components/tools/code-minifier";
+import cURLtoFetchConverter from "@/components/tools/curl-to-fetch";
 
 // Text & String Manipulation
 import CaseConverter from "@/components/tools/case-converter";
 import SlugGenerator from "@/components/tools/slug-generator";
 import LoremIpsumGenerator from "@/components/tools/lorem-ipsum-generator";
-import StringInspector from "@/components/tools/string-inspector";
+import StringInspectorandByteCounter from "@/components/tools/string-inspector";
 import DuplicateLineRemover from "@/components/tools/duplicate-line-remover";
 
 // Web & Network Utilities
-import UrlEncoderDecoder from "@/components/tools/url-encoder-decoder";
-import UrlQueryParser from "@/components/tools/url-query-parser";
-import MetaTagGenerator from "@/components/tools/meta-tag-generator";
+import UrlEncoderorDecoder from "@/components/tools/url-encoder";
+import UrlQueryParser from "@/components/tools/url-parser";
+import MetaTagGeneratorandOpenGraphGenerator from "@/components/tools/meta-tag-generator";
 import UserAgentParser from "@/components/tools/user-agent-parser";
 import HashGenerator from "@/components/tools/hash-generator";
 
 // Image & Media Processing
 import ImageCompressor from "@/components/tools/image-compressor";
 import ImageConverter from "@/components/tools/image-converter";
-import ImageResizer from "@/components/tools/image-resizer";
+import ImageResizerandCropper from "@/components/tools/image-resizer";
 import SvgMinifier from "@/components/tools/svg-minifier";
 import FaviconGenerator from "@/components/tools/favicon-generator";
 
 // Calculators & Converters
-import AspectRatioCalculator from "@/components/tools/aspect-ratio-calculator";
-import PxToRem from "@/components/tools/px-to-rem";
-import UnixTimestampConverter from "@/components/tools/unix-timestamp-converter";
+import AspectRatioCalculator from "@/components/tools/aspect-ratio";
+import PxToRemorEMConverter from "@/components/tools/px-to-rem";
+import UnixTimestampConverter from "@/components/tools/unix-timestamp";
 
 const toolComponents: Record<string, React.ReactNode> = {
   // Existing Tools
@@ -74,42 +74,42 @@ const toolComponents: Record<string, React.ReactNode> = {
   "pdf-to-excel": <PdfToExcel />,
 
   // Developer Utilities
-  "base64-encoder-decoder": <Base64EncoderDecoder />,
+  "base64": <Base64EncoderorDecoder />,
   "jwt-decoder": <JwtDecoder />,
   "diff-checker": <DiffChecker />,
   "sql-formatter": <SqlFormatter />,
   "regex-tester": <RegexTester />,
-  "markdown-editor": <MarkdownEditor />,
-  "code-minifier": <CodeMinifier />,
-  "curl-converter": <CurlConverter />,
+  "markdown-editor": <MarkdownEditorandPreviewer />,
+  "code-minifier": <CodeMinifierandUnminifier />,
+  "curl-to-converter": <cURLtoFetchConverter />,
 
   // Text & String Manipulation
   "case-converter": <CaseConverter />,
   "slug-generator": <SlugGenerator />,
   "lorem-ipsum-generator": <LoremIpsumGenerator />,
-  "string-inspector": <StringInspector />,
+  "string-inspector": <StringInspectorandByteCounter />,
   "duplicate-line-remover": <DuplicateLineRemover />,
 
   // Web & Network Utilities
-  "url-encoder-decoder": <UrlEncoderDecoder />,
-  "url-query-parser": <UrlQueryParser />,
-  "meta-tag-generator": <MetaTagGenerator />,
+  "url-encoder": <UrlEncoderorDecoder />,
+  "url-parser": <UrlQueryParser />,
+  "meta-generator": <MetaTagGeneratorandOpenGraphGenerator />,
   "user-agent-parser": <UserAgentParser />,
   "hash-generator": <HashGenerator />,
 
   // Image & Media Processing
   "image-compressor": <ImageCompressor />,
   "image-converter": <ImageConverter />,
-  "image-resizer": <ImageResizer />,
+  "image-resizer": <ImageResizerandCropper />,
   "svg-minifier": <SvgMinifier />,
   "favicon-generator": <FaviconGenerator />,
 
   // Calculators & Converters
-  "aspect-ratio-calculator": <AspectRatioCalculator />,
-  "px-to-rem": <PxToRem />,
-  "unix-timestamp-converter": <UnixTimestampConverter />,
-  "chmod-calculator": <ChmodCalculatorTool />,
-  "cron-parser": <CronParserTool />,
+  "aspect-ratio": <AspectRatioCalculator />,
+  "px-to-rem": <PxToRemorEMConverter />,
+  "unix-timestamp": <UnixTimestampConverter />,
+  "chmod-calculator": <ChmodPermissinCalculator />,
+  "cron-parser": <CronExpressionParser />,
 };
 
 export default async function ToolPage({
