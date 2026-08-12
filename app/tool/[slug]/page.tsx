@@ -28,7 +28,7 @@ import SqlFormatter from "@/components/tools/sql-formatter";
 import RegexTester from "@/components/tools/regex-tester";
 import MarkdownEditorandPreviewer from "@/components/tools/markdown-editor";
 import CodeMinifierandUnminifier from "@/components/tools/code-minifier";
-import cURLtoFetchConverter from "@/components/tools/curl-to-fetch";
+import CURLtoFetchConverter from "@/components/tools/curl-to-fetch";
 
 // Text & String Manipulation
 import CaseConverter from "@/components/tools/case-converter";
