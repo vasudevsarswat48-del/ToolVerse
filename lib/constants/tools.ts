@@ -114,4 +114,51 @@ export const ALL_TOOLS: Tool[] = [
   { slug: "unix-timestamp", name: "Unix Timestamp Converter", description: "Convert timestamps to human-readable dates.", category: "Calculators" },
   { slug: "chmod-calculator", name: "Chmod Permissions Calculator", description: "Calculate Linux file permissions numeric codes.", category: "Calculators" },
   { slug: "cron-parser", name: "Cron Expression Parser", description: "Translate cron schedules into plain English.", category: "Calculators" }
+// Some More
+ {
+    slug: "invoice-generator",
+    name: "Receipt / Invoice Generator",
+    description: "Generate clean custom invoices and receipts as PDFs.",
+  },
+  {
+    slug: "sign-pdf",
+    name: "Sign PDF / Draw Signature",
+    description: "Draw signatures and place them onto PDF files.",
+  },
+  {
+    slug: "pdf-watermark",
+    name: "Watermark Remover / Adder",
+    description: "Add text or image watermarks to PDF files.",
+  },
+  {
+    slug: "grammar-checker",
+    name: "Plagiarism & Grammar Checker",
+    description: "Check text structure and readability.",
+  },
+  {
+    slug: "gpa-calculator",
+    name: "GPA & Grade Calculator",
+    description: "Calculate high school and college semester GPAs.",
+  },
+  {
+    slug: "word-to-pdf",
+    name: "Word to PDF Converter",
+    description: "Convert Word DOCX documents to PDF format.",
+  },
+  {
+    slug: "excel-to-pdf",
+    name: "Excel to PDF Converter",
+    description: "Convert Excel spreadsheets to formatted PDFs.",
+  },
+  {
+    slug: "emi-calculator",
+    name: "EMI & Loan Calculator",
+    description: "Calculate monthly loan EMIs and total interest.",
+  },
+  {
+    slug: "fuel-calculator",
+    name: "Fuel Cost Calculator",
+    description: "Estimate fuel consumption and total trip cost.",
+  }, 
+
 ];
