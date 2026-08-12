@@ -97,7 +97,7 @@ export const ALL_TOOLS: Tool[] = [
   // Web & Network Utilities
   { slug: "url-encoder", name: "URL Encoder or Decoder", description: "Encode and decode special characters in URLs.", category: "Web" },
   { slug: "url-parser", name: "URL Query Parser", description: "Parse URL query parameters into structured JSON.", category: "Web" },
-  { slug: "meta-generator", name: "Meta Tag and OpenGraph Generator", description: "Generate SEO meta tags for your web pages.", category: "Web" },
+  { slug: "meta-tag-generator", name: "Meta Tag and OpenGraph Generator", description: "Generate SEO meta tags for your web pages.", category: "Web" },
   { slug: "user-agent", name: "User Agent Parser", description: "Parse browser and device details from user strings.", category: "Web" },
   { slug: "hash-generator", name: "Hash Generator", description: "Generate MD5 and SHA-256 hashes.", category: "Web" },
 
