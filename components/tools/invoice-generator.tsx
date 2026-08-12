@@ -30,7 +30,7 @@ export default function TaxInvoiceGenerator() {
   const [invoiceNo, setInvoiceNo] = useState("1234");
   const [invoiceDate, setInvoiceDate] = useState("04-03-2026");
   const [paymentDueDate, setPaymentDueDate] = useState("18-03-2026");
-  const [paymentMode, setPaymentMode] = useState("UPI / Bank Transfer");
+  const [paymentMode, setPaymentMode] = useState("UPI / Bank Transfer / Cash");
 
   const [clientName, setClientName] = useState("PARTY'S NAME");
   const [clientAddress, setClientAddress] = useState("132 STREET, CITY, STATE - 132456");
@@ -58,17 +58,33 @@ export default function TaxInvoiceGenerator() {
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 
+  // Calculations
   const subtotal = items.reduce((sum, item) => sum + (Number(item.qty) || 0) * (Number(item.rate) || 0), 0);
   const cgstAmount = (subtotal * cgstRate) / 100;
   const sgstAmount = (subtotal * sgstRate) / 100;
   const grandTotal = subtotal + cgstAmount + sgstAmount;
-  const balanceDue = grandTotal - balanceReceived;
+  const balanceDue = Math.max(0, grandTotal - balanceReceived);
+
+  // Status Indicator logic
+  const paymentStatus =
+    balanceReceived >= grandTotal && grandTotal > 0
+      ? "PAID IN FULL"
+      : balanceReceived > 0
+      ? "PARTIALLY PAID"
+      : "UNPAID / DUE";
+
+  const statusBgColor =
+    balanceReceived >= grandTotal && grandTotal > 0
+      ? "bg-emerald-600"
+      : balanceReceived > 0
+      ? "bg-amber-600"
+      : "bg-red-600";
 
   const handlePrint = () => window.print();
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">
-      {/* Control Bar (Hidden when printing) */}
+      {/* Control Bar (Hidden during print) */}
       <div className="no-print flex flex-wrap items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl text-white">
         <div className="flex items-center gap-4">
           <label className="text-xs font-semibold text-slate-300 flex items-center gap-2">
@@ -136,7 +152,7 @@ export default function TaxInvoiceGenerator() {
             </div>
           </div>
 
-          {/* Bill To & Payment Due */}
+          {/* Bill To & Dynamic Payment Status */}
           <div className="grid grid-cols-2 border-b-2 border-black min-h-[110px]">
             <div className="p-2 border-r-2 border-black space-y-0.5">
               <span className="font-bold text-black uppercase block">Bill To:</span>
@@ -146,19 +162,29 @@ export default function TaxInvoiceGenerator() {
               <div className="text-slate-800">GSTIN: <input value={clientGstin} onChange={(e) => setClientGstin(e.target.value)} className="w-36 focus:outline-none" /></div>
             </div>
 
-            <div className="p-2 bg-[#d8ecf8] space-y-2">
-              <div>
-                <span className="font-semibold">Payment Due Date: </span>
-                <input value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} className="bg-transparent focus:outline-none" />
+            <div className="p-2 bg-[#d8ecf8] space-y-2 flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div>
+                  <span className="font-semibold">Payment Due Date: </span>
+                  <input value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} className="bg-transparent focus:outline-none" />
+                </div>
+                <div>
+                  <span className="font-semibold">Payment Mode: </span>
+                  <input value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="bg-transparent focus:outline-none w-48" placeholder="e.g. Cash, UPI, Net Banking" />
+                </div>
               </div>
-              <div>
-                <span className="font-semibold">Payment Mode: </span>
-                <input value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="bg-transparent focus:outline-none" />
+
+              {/* Status Tag */}
+              <div className="flex items-center gap-2 pt-1 border-t border-slate-300">
+                <span className="font-semibold">Status:</span>
+                <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded ${statusBgColor}`}>
+                  {paymentStatus}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Table */}
+          {/* Line Items Table */}
           <table className="w-full border-collapse border-b-2 border-black">
             <thead>
               <tr className="border-b-2 border-black text-left font-bold bg-slate-50">
@@ -220,13 +246,13 @@ export default function TaxInvoiceGenerator() {
             </tbody>
           </table>
 
-          {/* Tax Calculation Block */}
+          {/* Tax & Payment Adjustments Block */}
           <div className="grid grid-cols-2 border-b-2 border-black">
             <div className="p-2 border-r-2 border-black space-y-1">
               <span className="font-bold underline block">Terms & conditions</span>
               <ol className="list-decimal list-inside space-y-0.5 text-[11px] text-slate-700">
                 <li>Goods once sold will not be taken back.</li>
-                <li>Interest @18% p.a. charged if bill unpaid.</li>
+                <li>Interest @18% p.a. charged if bill unpaid after due date.</li>
                 <li>Subject to local jurisdiction.</li>
               </ol>
             </div>
@@ -244,19 +270,22 @@ export default function TaxInvoiceGenerator() {
                 <span>Add : SGST @ {sgstRate}%</span>
                 <span className="font-mono">{currency}{sgstAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between p-1.5">
+              <div className="flex justify-between p-1.5 bg-blue-100/50">
                 <span>Balance Received :</span>
-                <input
-                  type="number"
-                  value={balanceReceived || ""}
-                  onChange={(e) => setBalanceReceived(Number(e.target.value))}
-                  className="w-24 text-right bg-transparent border-b border-black focus:outline-none font-mono"
-                  placeholder="0.00"
-                />
+                <div className="flex items-center">
+                  <span className="font-mono mr-1">{currency}</span>
+                  <input
+                    type="number"
+                    value={balanceReceived || ""}
+                    onChange={(e) => setBalanceReceived(Number(e.target.value))}
+                    className="w-20 text-right bg-transparent border-b border-black focus:outline-none font-mono font-bold text-emerald-800"
+                    placeholder="0.00"
+                  />
+                </div>
               </div>
-              <div className="flex justify-between p-1.5">
+              <div className="flex justify-between p-1.5 bg-amber-100/50">
                 <span>Balance Due :</span>
-                <span className="font-mono">{currency}{balanceDue.toFixed(2)}</span>
+                <span className="font-mono font-bold text-red-700">{currency}{balanceDue.toFixed(2)}</span>
               </div>
               <div className="flex justify-between p-2 bg-[#0b2545] text-white font-bold text-sm">
                 <span>Grand Total</span>
