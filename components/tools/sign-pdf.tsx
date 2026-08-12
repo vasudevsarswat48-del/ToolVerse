@@ -101,7 +101,7 @@ export default function SignPdf() {
 
       const signedPdfBytes = await pdfDoc.save();
 const blob = new Blob([signedPdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
-
+const url = URL.createObjectURL(blob);
       setSignedPdfUrl(url);
     } catch (error) {
       console.error("Error signing PDF:", error);
