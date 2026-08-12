@@ -55,6 +55,16 @@ import FaviconGenerator from "@/components/tools/favicon-generator";
 import AspectRatioCalculator from "@/components/tools/aspect-ratio";
 import PxToRemorEMConverter from "@/components/tools/px-to-rem";
 import UnixTimestampConverter from "@/components/tools/unix-timestamp";
+// Some More
+import InvoiceGenerator from "@/components/tools/invoice-generator";
+import SignPdf from "@/components/tools/sign-pdf";
+import PdfWatermark from "@/components/tools/pdf-watermark";
+import GrammarChecker from "@/components/tools/grammar-checker";
+import GpaCalculator from "@/components/tools/gpa-calculator";
+import WordToPdf from "@/components/tools/word-to-pdf";
+import ExcelToPdf from "@/components/tools/excel-to-pdf";
+import EmiCalculator from "@/components/tools/emi-calculator";
+import FuelCalculator from "@/components/tools/fuel-calculator";
 
 const toolComponents: Record<string, React.ReactNode> = {
   // Existing Tools
@@ -110,6 +120,16 @@ const toolComponents: Record<string, React.ReactNode> = {
   "unix-timestamp": <UnixTimestampConverter />,
   "chmod-calculator": <ChmodPermissionsCalculator />,
   "cron-parser": <CronExpressionParser />,
+  //Some More
+  "invoice-generator": <InvoiceGenerator />,
+  "sign-pdf": <SignPdf />,
+  "pdf-watermark": <PdfWatermark />,
+  "grammar-checker": <GrammarChecker />,
+  "gpa-calculator": <GpaCalculator />,
+  "word-to-pdf": <WordToPdf />,
+  "excel-to-pdf": <ExcelToPdf />,
+  "emi-calculator": <EmiCalculator />,
+  "fuel-calculator": <FuelCalculator />,
 };
 
 export default async function ToolPage({
