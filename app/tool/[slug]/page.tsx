@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { ALL_TOOLS } from "@/lib/constants/tools";
 
+// Existing Tools
 import JsonFormatter from "@/components/tools/json-formatter";
 import WordCounter from "@/components/tools/word-counter";
 import QrCodeGenerator from "@/components/tools/qr-code-generator";
@@ -16,8 +17,47 @@ import RemovePdfPages from "@/components/tools/remove-pdf-pages";
 import CompressPdf from "@/components/tools/compress-pdf";
 import PdfToWord from "@/components/tools/pdf-to-word";
 import PdfToExcel from "@/components/tools/pdf-to-excel";
+import ChmodCalculatorTool from "@/components/tools/chmod-calculator";
+import CronParserTool from "@/components/tools/cron-parser";
+
+// Developer Utilities
+import Base64EncoderDecoder from "@/components/tools/base64-encoder-decoder";
+import JwtDecoder from "@/components/tools/jwt-decoder";
+import DiffChecker from "@/components/tools/diff-checker";
+import SqlFormatter from "@/components/tools/sql-formatter";
+import RegexTester from "@/components/tools/regex-tester";
+import MarkdownEditor from "@/components/tools/markdown-editor";
+import CodeMinifier from "@/components/tools/code-minifier";
+import CurlConverter from "@/components/tools/curl-converter";
+
+// Text & String Manipulation
+import CaseConverter from "@/components/tools/case-converter";
+import SlugGenerator from "@/components/tools/slug-generator";
+import LoremIpsumGenerator from "@/components/tools/lorem-ipsum-generator";
+import StringInspector from "@/components/tools/string-inspector";
+import DuplicateLineRemover from "@/components/tools/duplicate-line-remover";
+
+// Web & Network Utilities
+import UrlEncoderDecoder from "@/components/tools/url-encoder-decoder";
+import UrlQueryParser from "@/components/tools/url-query-parser";
+import MetaTagGenerator from "@/components/tools/meta-tag-generator";
+import UserAgentParser from "@/components/tools/user-agent-parser";
+import HashGenerator from "@/components/tools/hash-generator";
+
+// Image & Media Processing
+import ImageCompressor from "@/components/tools/image-compressor";
+import ImageConverter from "@/components/tools/image-converter";
+import ImageResizer from "@/components/tools/image-resizer";
+import SvgMinifier from "@/components/tools/svg-minifier";
+import FaviconGenerator from "@/components/tools/favicon-generator";
+
+// Calculators & Converters
+import AspectRatioCalculator from "@/components/tools/aspect-ratio-calculator";
+import PxToRem from "@/components/tools/px-to-rem";
+import UnixTimestampConverter from "@/components/tools/unix-timestamp-converter";
 
 const toolComponents: Record<string, React.ReactNode> = {
+  // Existing Tools
   "json-formatter": <JsonFormatter />,
   "word-counter": <WordCounter />,
   "qr-code-generator": <QrCodeGenerator />,
@@ -32,6 +72,44 @@ const toolComponents: Record<string, React.ReactNode> = {
   "compress-pdf": <CompressPdf />,
   "pdf-to-word": <PdfToWord />,
   "pdf-to-excel": <PdfToExcel />,
+
+  // Developer Utilities
+  "base64-encoder-decoder": <Base64EncoderDecoder />,
+  "jwt-decoder": <JwtDecoder />,
+  "diff-checker": <DiffChecker />,
+  "sql-formatter": <SqlFormatter />,
+  "regex-tester": <RegexTester />,
+  "markdown-editor": <MarkdownEditor />,
+  "code-minifier": <CodeMinifier />,
+  "curl-converter": <CurlConverter />,
+
+  // Text & String Manipulation
+  "case-converter": <CaseConverter />,
+  "slug-generator": <SlugGenerator />,
+  "lorem-ipsum-generator": <LoremIpsumGenerator />,
+  "string-inspector": <StringInspector />,
+  "duplicate-line-remover": <DuplicateLineRemover />,
+
+  // Web & Network Utilities
+  "url-encoder-decoder": <UrlEncoderDecoder />,
+  "url-query-parser": <UrlQueryParser />,
+  "meta-tag-generator": <MetaTagGenerator />,
+  "user-agent-parser": <UserAgentParser />,
+  "hash-generator": <HashGenerator />,
+
+  // Image & Media Processing
+  "image-compressor": <ImageCompressor />,
+  "image-converter": <ImageConverter />,
+  "image-resizer": <ImageResizer />,
+  "svg-minifier": <SvgMinifier />,
+  "favicon-generator": <FaviconGenerator />,
+
+  // Calculators & Converters
+  "aspect-ratio-calculator": <AspectRatioCalculator />,
+  "px-to-rem": <PxToRem />,
+  "unix-timestamp-converter": <UnixTimestampConverter />,
+  "chmod-calculator": <ChmodCalculatorTool />,
+  "cron-parser": <CronParserTool />,
 };
 
 export default async function ToolPage({
@@ -54,7 +132,9 @@ export default async function ToolPage({
       </div>
       <div className="glass-panel p-6 rounded-2xl">
         {toolComponents[slug] || (
-          <div className="text-amber-400">Tool interface is loading or under maintenance.</div>
+          <div className="text-center py-12 text-slate-400">
+            Tool module coming soon!
+          </div>
         )}
       </div>
     </div>
