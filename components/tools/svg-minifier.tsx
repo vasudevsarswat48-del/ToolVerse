@@ -355,7 +355,7 @@ export default function SvgMinifierTool() {
               {minifiedSvg ? (
                 <div
                   className="max-w-full max-h-full flex items-center justify-center [&>svg]:max-w-full [&>svg]:max-h-full [&>svg]:w-auto [&>svg]:h-auto"
-                  dangerouslySetInnerHTML={{ __html: output }}
+                 dangerouslySetInnerHTML={{ __html: minifiedSvg }}
                   />
               ) : (
                 <span className="text-xs text-slate-600 italic">No valid SVG output</span>
