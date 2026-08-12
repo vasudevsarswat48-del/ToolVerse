@@ -99,8 +99,8 @@ export default function SignPdf() {
 
       // Save modified PDF
       const modifiedPdfBytes = await pdfDoc.save();
-      const blob = new Blob([modifiedPdfBytes], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
+      const pdfBytes = await pdfDoc.save();
+const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
 
       setSignedPdfUrl(url);
     } catch (error) {
