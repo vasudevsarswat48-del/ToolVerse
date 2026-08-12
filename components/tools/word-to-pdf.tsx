@@ -111,7 +111,7 @@ export default function WordToPdf() {
         }
       }
 
-      const pdfBytes = await pdfDoc.save();
+    
      const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
 
