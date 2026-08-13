@@ -103,8 +103,8 @@ export default function PdfOrganizer() {
         newPdf.addPage(copiedPage);
       }
 
-      const pdfBytes = await newPdf.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+     const pdfBytes = await pdfDoc.save();
+const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
