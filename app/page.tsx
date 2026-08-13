@@ -170,7 +170,7 @@ export default function Home() {
                 Have Feedback or Tool Suggestions?
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Help us improve ToolVerse or request a new developer tool.
+                Help us improve Toolingo or request a new developer tool.
               </p>
             </div>
 
