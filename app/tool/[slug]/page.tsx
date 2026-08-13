@@ -153,7 +153,7 @@ const toolComponents: Record<string, React.ReactNode> = {
   "exif-viewer":  <ExifViewer />,
   "unit-converter":  <UnitConverter />,
   "password-checker":  <PasswordChecker />,
-  "random-generator": vRandomGenerator />,
+  "random-generator":  <RandomGenerator />,
   "barcode-generator":  <BarcodeGenerator />,
   "json-diff":  <JsonDiff />,
 };
