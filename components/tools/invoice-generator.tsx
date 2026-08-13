@@ -172,7 +172,7 @@ export default function InvoiceGenerator() {
         id="printable-invoice"
         className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full mx-auto box-border overflow-hidden"
       >
-        {/* Header Banner - Flush to top edge */}
+        {/* Header Banner */}
         <div className="bg-black text-white flex justify-between items-center px-4 py-2 font-bold text-sm">
           <span>TAX INVOICE</span>
           <div className="text-right text-xs flex gap-4">
@@ -306,24 +306,9 @@ export default function InvoiceGenerator() {
           </tbody>
         </table>
 
-        {/* Totals & Terms Footer */}
-        <div className="grid grid-cols-2 p-3 gap-4 items-start">
-          {/* Editable Terms & Conditions */}
-          <div>
-            <div className="font-bold underline text-xs mb-1">Terms & conditions</div>
-            <ol
-              contentEditable
-              suppressContentEditableWarning
-              className="list-decimal list-inside text-[10px] space-y-0.5 outline-none focus:bg-yellow-50/50 p-1 rounded"
-            >
-              <li>Goods once sold will not be taken back.</li>
-              <li>Interest @18% p.a. charged if bill unpaid after due date.</li>
-              <li>Subject to local jurisdiction.</li>
-            </ol>
-          </div>
-
-          {/* Totals with Editable CGST & SGST Percentages */}
-          <div className="border-l-2 border-black pl-4 space-y-1 text-right">
+        {/* Totals Section */}
+        <div className="flex justify-end p-3 border-b-2 border-black">
+          <div className="w-1/2 space-y-1 text-right">
             <div className="flex justify-between border-b pb-1">
               <span className="font-semibold">Total Subtotal:</span>
               <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
@@ -366,12 +351,29 @@ export default function InvoiceGenerator() {
           </div>
         </div>
 
-        {/* Signatory Footer */}
-        <div className="flex justify-between items-end p-3 border-t-2 border-black">
-          <div className="font-semibold text-[11px]">
-            Total Amount ({currency} - In Words) : <span className="underline italic font-bold">RUPEES {grandTotal.toFixed(2)} ONLY</span>
+        {/* Total Amount in Words */}
+        <div className="p-3 border-b-2 border-black font-semibold text-[11px]">
+          Total Amount ({currency} - In Words) : <span className="underline italic font-bold">RUPEES {grandTotal.toFixed(2)} ONLY</span>
+        </div>
+
+        {/* Terms & Conditions & Signatory Footer */}
+        <div className="flex justify-between items-end p-3 gap-4">
+          {/* Terms & Conditions directly under Total Amount in Words */}
+          <div className="flex-1 pr-4">
+            <div className="font-bold underline text-xs mb-1">Terms & conditions</div>
+            <ol
+              contentEditable
+              suppressContentEditableWarning
+              className="list-decimal list-inside text-[10px] space-y-0.5 outline-none focus:bg-yellow-50/50 p-1 rounded"
+            >
+              <li>Goods once sold will not be taken back.</li>
+              <li>Interest @18% p.a. charged if bill unpaid after due date.</li>
+              <li>Subject to local jurisdiction.</li>
+            </ol>
           </div>
-          <div className="text-right space-y-6">
+
+          {/* Authorised Signatory Right Side */}
+          <div className="text-right space-y-8 shrink-0">
             <div className="font-bold text-xs">For : BUSINESS NAME</div>
             <div className="border-t border-black pt-1 text-[11px] font-semibold">Authorised Signatory</div>
           </div>
