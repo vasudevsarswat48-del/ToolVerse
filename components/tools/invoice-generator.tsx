@@ -40,6 +40,26 @@ export default function TaxInvoiceGenerator() {
   const [cgstRate, setCgstRate] = useState(14);
   const [sgstRate, setSgstRate] = useState(14);
   const [balanceReceived, setBalanceReceived] = useState(0);
+  // Editable Terms & Conditions State
+const [terms, setTerms] = useState<string[]>([
+  "Goods once sold will not be taken back.",
+  "Interest @18% p.a. charged if bill unpaid after due date.",
+  "Subject to local jurisdiction.",
+]);
+
+const handleTermChange = (index: number, value: string) => {
+  const updatedTerms = [...terms];
+  updatedTerms[index] = value;
+  setTerms(updatedTerms);
+};
+
+const handleAddTerm = () => {
+  setTerms([...terms, ""]);
+};
+
+const handleRemoveTerm = (index: number) => {
+  setTerms(terms.filter((_, i) => i !== index));
+};
 
   const [items, setItems] = useState<LineItem[]>([
     { id: "1", description: "Web Development Services", hsnCode: "998314", qty: 1, rate: 1000 },
