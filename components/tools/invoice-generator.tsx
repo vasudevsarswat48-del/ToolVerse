@@ -101,16 +101,14 @@ export default function InvoiceGenerator() {
             }
             #print-wrapper {
               width: 210mm;
-              height: 280mm;
-              max-height: 280mm;
-              padding: 6mm 8mm;
+              padding: 4mm 6mm;
               box-sizing: border-box;
               background: #ffffff;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              transform: scale(0.95);
-              transform-origin: top center;
+            }
+            input {
+              border: none !important;
+              outline: none !important;
+              background: transparent !important;
             }
             .print\\:hidden, button, .no-print {
               display: none !important;
@@ -172,10 +170,10 @@ export default function InvoiceGenerator() {
       {/* Printable Invoice Sheet */}
       <div
         id="printable-invoice"
-        className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full max-h-[280mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
+        className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full mx-auto box-border overflow-hidden"
       >
-        {/* Header Banner */}
-        <div className="bg-[#0b2545] text-white flex justify-between items-center px-4 py-2 border-b-2 border-black font-bold text-sm">
+        {/* Header Banner - Flush to top edge */}
+        <div className="bg-black text-white flex justify-between items-center px-4 py-2 font-bold text-sm">
           <span>TAX INVOICE</span>
           <div className="text-right text-xs flex gap-4">
             <div>
@@ -198,7 +196,7 @@ export default function InvoiceGenerator() {
         </div>
 
         {/* Business Header */}
-        <div className="text-center py-2 border-b-2 border-black space-y-0.5">
+        <div className="text-center py-3 border-t-2 border-b-2 border-black space-y-0.5">
           <div className="text-lg font-bold uppercase">BUSINESS NAME</div>
           <div className="text-xs text-gray-700">132 Street, City, State, PIN</div>
           <div className="flex justify-center gap-6 text-[11px] pt-1">
@@ -210,7 +208,7 @@ export default function InvoiceGenerator() {
 
         {/* Bill To & Payment Info */}
         <div className="grid grid-cols-2 border-b-2 border-black">
-          <div className="p-2 border-r-2 border-black space-y-1">
+          <div className="p-3 border-r-2 border-black space-y-1">
             <div className="font-bold underline">BILL TO:</div>
             <input
               value={clientName}
@@ -226,7 +224,7 @@ export default function InvoiceGenerator() {
               placeholder="132 STREET, CITY, STATE - 132456"
             />
           </div>
-          <div className="p-2 space-y-1 bg-gray-50/50">
+          <div className="p-3 space-y-1 bg-gray-50/50">
             <div>
               <span className="font-semibold">Payment Due Date: </span>
               <input
@@ -250,17 +248,17 @@ export default function InvoiceGenerator() {
         <table className="w-full border-b-2 border-black text-left">
           <thead>
             <tr className="border-b-2 border-black bg-gray-100 font-bold">
-              <th className="p-1.5 border-r-2 border-black">Description</th>
-              <th className="p-1.5 border-r-2 border-black w-24 text-center">HSN Code</th>
-              <th className="p-1.5 border-r-2 border-black w-16 text-center">Qty</th>
-              <th className="p-1.5 border-r-2 border-black w-24 text-right">Rate</th>
-              <th className="p-1.5 w-28 text-right">Amount</th>
+              <th className="p-2 border-r-2 border-black">Description</th>
+              <th className="p-2 border-r-2 border-black w-24 text-center">HSN Code</th>
+              <th className="p-2 border-r-2 border-black w-16 text-center">Qty</th>
+              <th className="p-2 border-r-2 border-black w-24 text-right">Rate</th>
+              <th className="p-2 w-28 text-right">Amount</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
               <tr key={item.id} className="border-b border-gray-300">
-                <td className="p-1.5 border-r-2 border-black flex justify-between items-center group">
+                <td className="p-2 border-r-2 border-black flex justify-between items-center group">
                   <input
                     value={item.description}
                     onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
@@ -277,14 +275,14 @@ export default function InvoiceGenerator() {
                     </button>
                   )}
                 </td>
-                <td className="p-1.5 border-r-2 border-black text-center">
+                <td className="p-2 border-r-2 border-black text-center">
                   <input
                     value={item.hsnCode}
                     onChange={(e) => handleItemChange(item.id, "hsnCode", e.target.value)}
                     className="w-full text-center bg-transparent focus:outline-none"
                   />
                 </td>
-                <td className="p-1.5 border-r-2 border-black text-center">
+                <td className="p-2 border-r-2 border-black text-center">
                   <input
                     type="number"
                     value={item.qty}
@@ -292,7 +290,7 @@ export default function InvoiceGenerator() {
                     className="w-full text-center bg-transparent focus:outline-none"
                   />
                 </td>
-                <td className="p-1.5 border-r-2 border-black text-right">
+                <td className="p-2 border-r-2 border-black text-right">
                   <input
                     type="number"
                     value={item.rate}
@@ -300,7 +298,7 @@ export default function InvoiceGenerator() {
                     className="w-full text-right bg-transparent focus:outline-none"
                   />
                 </td>
-                <td className="p-1.5 text-right font-mono font-medium">
+                <td className="p-2 text-right font-mono font-medium">
                   {currency}{(item.qty * item.rate).toFixed(2)}
                 </td>
               </tr>
@@ -309,7 +307,7 @@ export default function InvoiceGenerator() {
         </table>
 
         {/* Totals & Terms Footer */}
-        <div className="grid grid-cols-2 pt-2 gap-4 items-start">
+        <div className="grid grid-cols-2 p-3 gap-4 items-start">
           {/* Editable Terms & Conditions */}
           <div>
             <div className="font-bold underline text-xs mb-1">Terms & conditions</div>
@@ -331,7 +329,7 @@ export default function InvoiceGenerator() {
               <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
             </div>
 
-            {/* Editable CGST % Input */}
+            {/* CGST % */}
             <div className="flex justify-between border-b pb-1 items-center">
               <span className="font-semibold flex items-center gap-1">
                 Add : CGST @
@@ -339,14 +337,14 @@ export default function InvoiceGenerator() {
                   type="number"
                   value={cgstRate}
                   onChange={(e) => setCgstRate(Number(e.target.value))}
-                  className="w-10 text-center font-bold bg-transparent border-b border-dashed border-gray-400 focus:outline-none focus:border-black"
+                  className="w-8 text-center font-bold bg-transparent focus:outline-none"
                 />
                 %
               </span>
               <span className="font-mono">{currency}{cgstAmount.toFixed(2)}</span>
             </div>
 
-            {/* Editable SGST % Input */}
+            {/* SGST % */}
             <div className="flex justify-between border-b pb-1 items-center">
               <span className="font-semibold flex items-center gap-1">
                 Add : SGST @
@@ -354,7 +352,7 @@ export default function InvoiceGenerator() {
                   type="number"
                   value={sgstRate}
                   onChange={(e) => setSgstRate(Number(e.target.value))}
-                  className="w-10 text-center font-bold bg-transparent border-b border-dashed border-gray-400 focus:outline-none focus:border-black"
+                  className="w-8 text-center font-bold bg-transparent focus:outline-none"
                 />
                 %
               </span>
@@ -369,7 +367,7 @@ export default function InvoiceGenerator() {
         </div>
 
         {/* Signatory Footer */}
-        <div className="flex justify-between items-end pt-4 border-t-2 border-black mt-2">
+        <div className="flex justify-between items-end p-3 border-t-2 border-black">
           <div className="font-semibold text-[11px]">
             Total Amount ({currency} - In Words) : <span className="underline italic font-bold">RUPEES {grandTotal.toFixed(2)} ONLY</span>
           </div>
