@@ -159,6 +159,79 @@ export const ALL_TOOLS: Tool[] = [
     slug: "fuel-calculator",
     name: "Fuel Cost Calculator",
     description: "Estimate fuel consumption and total trip cost.",
-  }, 
+  },
+  // New Tools
+  {
+    name: "PDF Page Organizer",
+    slug: "pdf-organizer",
+    description: "Drag, drop, rotate, and reorder pages inside PDF files.",
+    category: "PDF",
+  },
+  {
+    name: "PDF Metadata Editor",
+    slug: "pdf-metadata",
+    description: "View and edit PDF author, title, tags, and document metadata.",
+    category: "PDF",
+  },
+  {
+    name: "Image Background Remover",
+    slug: "bg-remover",
+    description: "Remove background from images instantly right in your browser.",
+    category: "Image",
+  },
+  {
+    name: "Image to Base64 Converter",
+    slug: "image-to-base64",
+    description: "Convert JPG, PNG, and WebP images to Base64 strings for code.",
+    category: "Image",
+  },
+  {
+    name: "Meme Generator",
+    slug: "meme-generator",
+    description: "Add custom captions and styled text overlays on meme templates.",
+    category: "Image",
+  },
+  {
+    name: "Color Palette Extractor",
+    slug: "color-palette",
+    description: "Extract dominant color palettes and HEX codes from uploaded images.",
+    category: "Image",
+  },
+  {
+    name: "EXIF Data Viewer & Remover",
+    slug: "exif-viewer",
+    description: "Inspect camera EXIF metadata and strip sensitive location tags.",
+    category: "Image",
+  },
+  {
+    name: "Unit Converter",
+    slug: "unit-converter",
+    description: "Convert length, weight, temperature, and volume units instantly.",
+    category: "Utilities",
+  },
+  {
+    name: "Password Strength Checker",
+    slug: "password-checker",
+    description: "Analyze entropy, crack time, and security metrics for passwords.",
+    category: "Utilities",
+  },
+  {
+    name: "Random Generator",
+    slug: "random-generator",
+    description: "Generate cryptographically secure numbers, UUIDs, and strings.",
+    category: "Utilities",
+  },
+  {
+    name: "Barcode Generator",
+    slug: "barcode-generator",
+    description: "Create standard Code128, EAN-13, and UPC barcodes for download.",
+    category: "Developer",
+  },
+  {
+    name: "JSON & Code Diff",
+    slug: "json-diff",
+    description: "Compare structural differences between two JSON payloads or code snippets.",
+    category: "Developer",
+  },
 
 ];
