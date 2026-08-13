@@ -17,6 +17,10 @@ import {
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Feedback Form State
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [feedback, setFeedback] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -31,33 +35,45 @@ export default function Home() {
     );
   }, [searchQuery]);
 
- const handleFeedbackSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!feedback.trim()) return;
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !feedback.trim()) return;
 
-  setIsSending(true);
+    setIsSending(true);
 
-  try {
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        access_key: "2f04d9ca-6ee6-414d-8dd9-1161cb853ad4", // Paste key here
-        message: feedback,
-      }),
-    });
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "2f04d9ca-6ee6-414d-8dd9-1161cb853ad4", // 👈 PASTE YOUR KEY HERE
+          name: name,
+          email: email,
+          message: feedback,
+          subject: `New ToolVerse Feedback from ${name}`,
+        }),
+      });
 
-    if (res.ok) {
-      setIsSubmitted(true);
-      setFeedback("");
-      setTimeout(() => setIsSubmitted(false), 5000);
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+        setName("");
+        setEmail("");
+        setFeedback("");
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Failed to submit feedback. Please check your network.");
+    } finally {
+      setIsSending(false);
     }
-  } catch (err) {
-    alert("Error sending feedback. Please try again.");
-  } finally {
-    setIsSending(false);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-[#070913] text-slate-100 selection:bg-cyan-500 selection:text-white relative overflow-hidden">
@@ -174,41 +190,60 @@ export default function Home() {
 
         {/* Interactive Feedback Section */}
         <div className="mt-20 pt-10 border-t border-slate-800/80 max-w-2xl mx-auto">
-          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl text-center space-y-4">
-            <div className="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center mx-auto">
-              <MessageSquare className="w-5 h-5" />
-            </div>
-
-            <div>
+          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl space-y-6">
+            <div className="text-center space-y-1">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center mx-auto mb-3">
+                <MessageSquare className="w-5 h-5" />
+              </div>
               <h3 className="text-lg font-bold text-white font-[family-name:var(--font-outfit)]">
                 Have Feedback or Tool Suggestions?
               </h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Help us improve Toolingo or request a new developer tool.
+              <p className="text-xs text-slate-400">
+                Send us a direct message and we'll reply to your email.
               </p>
             </div>
 
             {isSubmitted ? (
-              <div className="flex items-center justify-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-3 rounded-xl text-xs font-semibold animate-in fade-in">
-                <CheckCircle2 className="w-4 h-4" /> Thank you! Your feedback has been received.
+              <div className="flex items-center justify-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-4 rounded-xl text-xs font-semibold animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4" /> Thank you! Your message has been sent to our email.
               </div>
             ) : (
-              <form onSubmit={handleFeedbackSubmit} className="space-y-3">
+              <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your Name"
+                    className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500 text-slate-200 placeholder-slate-500 text-xs rounded-xl p-3 outline-none transition-colors"
+                    required
+                  />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your Email Address"
+                    className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500 text-slate-200 placeholder-slate-500 text-xs rounded-xl p-3 outline-none transition-colors"
+                    required
+                  />
+                </div>
+
                 <textarea
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Share your thoughts, report an issue, or request a feature..."
-                  rows={3}
+                  placeholder="Share your feedback, report an issue, or request a new feature..."
+                  rows={4}
                   className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500 text-slate-200 placeholder-slate-500 text-xs rounded-xl p-3 outline-none transition-colors resize-none"
                   required
                 />
+
                 <button
                   type="submit"
                   disabled={isSending}
-                  className="flex items-center justify-center gap-2 w-full sm:w-auto mx-auto px-6 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all disabled:opacity-50"
+                  className="flex items-center justify-center gap-2 w-full px-6 py-3 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all disabled:opacity-50"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  {isSending ? "Sending..." : "Submit Feedback"}
+                  {isSending ? "Sending Message..." : "Submit Feedback"}
                 </button>
               </form>
             )}
