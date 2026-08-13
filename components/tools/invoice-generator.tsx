@@ -201,7 +201,7 @@ export default function TaxInvoiceGenerator() {
                 const amount = (Number(item.qty) || 0) * (Number(item.rate) || 0);
                 return (
                   <tr key={item.id} className="align-top">
-                    <td className="p-2 border-r-2 border-black">
+                    <td className="p-1.5 border-r-2 border-black">
                       <input
                         value={item.description}
                         onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
