@@ -31,19 +31,33 @@ export default function Home() {
     );
   }, [searchQuery]);
 
-  const handleFeedbackSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!feedback.trim()) return;
+ const handleFeedbackSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!feedback.trim()) return;
 
-    setIsSending(true);
-    // Simulate API request delay
-    setTimeout(() => {
-      setIsSending(false);
+  setIsSending(true);
+
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_key: "2f04d9ca-6ee6-414d-8dd9-1161cb853ad4", // Paste key here
+        message: feedback,
+      }),
+    });
+
+    if (res.ok) {
       setIsSubmitted(true);
       setFeedback("");
-      setTimeout(() => setIsSubmitted(false), 5000); // Reset success message after 5s
-    }, 600);
-  };
+      setTimeout(() => setIsSubmitted(false), 5000);
+    }
+  } catch (err) {
+    alert("Error sending feedback. Please try again.");
+  } finally {
+    setIsSending(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#070913] text-slate-100 selection:bg-cyan-500 selection:text-white relative overflow-hidden">
