@@ -36,17 +36,16 @@ body {
   border-color: rgba(255, 255, 255, 0.1);
 }
 @media print {
-  /* Force A4 portrait and remove default browser margins/headers */
+  /* 1. Force 0 margins directly in the browser page engine (removes headers/footers automatically) */
   @page {
     size: A4 portrait;
-    margin: 0;
+    margin: 0mm !important;
   }
 
-  /* Reset body and html height to exactly 1 page */
+  /* 2. Lock html and body to 1 strict A4 page */
   html, body {
     width: 210mm !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+    height: 297mm !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
@@ -55,12 +54,12 @@ body {
     print-color-adjust: exact !important;
   }
 
-  /* Hide everything on the page */
+  /* 3. Hide all site elements */
   body * {
     visibility: hidden !important;
   }
 
-  /* Display ONLY the printable invoice */
+  /* 4. Display ONLY the invoice scaled perfectly */
   #printable-invoice,
   #printable-invoice * {
     visibility: visible !important;
@@ -71,20 +70,22 @@ body {
     left: 0 !important;
     top: 0 !important;
     width: 210mm !important;
-    height: 285mm !important; /* Slightly under 297mm so printer margins never trigger Page 2 */
-    max-height: 285mm !important;
+    /* 275mm leaves a 22mm safety gap so it NEVER overflows onto page 2 on any screen */
+    height: 275mm !important; 
     margin: 0 !important;
-    padding: 8mm 12mm !important;
+    padding: 10mm 12mm !important;
     box-sizing: border-box !important;
     background: #ffffff !important;
     color: #000000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
     overflow: hidden !important;
-    page-break-inside: avoid !important;
     page-break-after: avoid !important;
     break-after: avoid !important;
   }
 
-  /* Hide trash icons, buttons, navbar */
+  /* 5. Hide buttons & icons */
   .no-print,
   .print\:hidden,
   button {
