@@ -100,7 +100,7 @@ export default function TaxInvoiceGenerator() {
           }
           #print-wrapper {
             width: 210mm;
-            height: 275mm;
+            height: 265mm;
             padding: 8mm 10mm;
             box-sizing: border-box;
             background: #ffffff;
@@ -204,7 +204,7 @@ export default function TaxInvoiceGenerator() {
       {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
      <div
   id="printable-invoice"
-  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full h-[275mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
+  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full h-[265mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
 >
         <div>
           {/* Header Banner */}
