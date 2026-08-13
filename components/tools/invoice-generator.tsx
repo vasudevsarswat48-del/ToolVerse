@@ -110,10 +110,10 @@ export default function TaxInvoiceGenerator() {
           </button>
         </div>
 
-        <button
-          onClick={handlePrint}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded shadow transition-colors"
-        >
+       <button
+  onClick={handlePrint}
+  className="print:hidden flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded shadow transition-colors"
+>
           <Printer className="w-4 h-4" /> Print / Save A4 PDF
         </button>
       </div>
