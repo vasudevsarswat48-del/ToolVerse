@@ -35,3 +35,15 @@ body {
 .border-surface-border {
   border-color: rgba(255, 255, 255, 0.1);
 }
+/* Highlights editable text when hovering/focusing on screen */
+[contenteditable="true"]:hover {
+  background-color: rgba(234, 179, 8, 0.15) !important; /* Soft yellow tint */
+  border-radius: 2px;
+  cursor: text;
+}
+
+[contenteditable="true"]:focus {
+  background-color: #ffffff !important;
+  outline: 1px dashed #64748b !important;
+  border-radius: 2px;
+}
