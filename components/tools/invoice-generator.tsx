@@ -14,11 +14,21 @@ export default function InvoiceGenerator() {
   const [currency, setCurrency] = useState("₹");
   const [invoiceNo, setInvoiceNo] = useState("INV-001");
   const [invoiceDate, setInvoiceDate] = useState("2026-08-13");
+  
+  // Business Header State
+  const [businessName, setBusinessName] = useState("BUSINESS NAME");
+  const [businessAddress, setBusinessAddress] = useState("132 Street, City, State, PIN");
+  const [businessGstin, setBusinessGstin] = useState("AAA213465");
+  const [businessEmail, setBusinessEmail] = useState("122@gmail.com");
+  const [businessPan, setBusinessPan] = useState("AAA132456");
+
+  // Client Info State
   const [clientName, setClientName] = useState("CLIENT / PARTY NAME");
   const [clientAddress, setClientAddress] = useState("132 STREET, CITY, STATE - 132456");
   const [dueDate, setDueDate] = useState("2026-08-20");
   const [paymentMode, setPaymentMode] = useState("Bank Transfer / UPI");
 
+  // Tax Rates State
   const [cgstRate, setCgstRate] = useState(14);
   const [sgstRate, setSgstRate] = useState(14);
 
@@ -195,14 +205,45 @@ export default function InvoiceGenerator() {
           </div>
         </div>
 
-        {/* Business Header */}
-        <div className="text-center py-3 border-t-2 border-b-2 border-black space-y-0.5">
-          <div className="text-lg font-bold uppercase">BUSINESS NAME</div>
-          <div className="text-xs text-gray-700">132 Street, City, State, PIN</div>
-          <div className="flex justify-center gap-6 text-[11px] pt-1">
-            <div><span className="font-semibold">GSTIN:</span> AAA213465</div>
-            <div><span className="font-semibold">Email:</span> 122@gmail.com</div>
-            <div><span className="font-semibold">PAN NO:</span> AAA132456</div>
+        {/* Fully Editable Business Header */}
+        <div className="text-center py-3 border-t-2 border-b-2 border-black space-y-1">
+          <input
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            className="text-lg font-bold uppercase text-center w-full bg-transparent focus:outline-none focus:bg-gray-100/50"
+            placeholder="YOUR BUSINESS NAME"
+          />
+          <input
+            value={businessAddress}
+            onChange={(e) => setBusinessAddress(e.target.value)}
+            className="text-xs text-gray-700 text-center w-full bg-transparent focus:outline-none focus:bg-gray-100/50"
+            placeholder="Street, City, State, PIN"
+          />
+          <div className="flex justify-center items-center gap-4 text-[11px] pt-1">
+            <div className="flex items-center gap-1">
+              <span className="font-semibold">GSTIN:</span>
+              <input
+                value={businessGstin}
+                onChange={(e) => setBusinessGstin(e.target.value)}
+                className="w-24 bg-transparent focus:outline-none focus:bg-gray-100/50"
+              />
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="font-semibold">Email:</span>
+              <input
+                value={businessEmail}
+                onChange={(e) => setBusinessEmail(e.target.value)}
+                className="w-36 bg-transparent focus:outline-none focus:bg-gray-100/50"
+              />
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="font-semibold">PAN NO:</span>
+              <input
+                value={businessPan}
+                onChange={(e) => setBusinessPan(e.target.value)}
+                className="w-24 bg-transparent focus:outline-none focus:bg-gray-100/50"
+              />
+            </div>
           </div>
         </div>
 
@@ -358,7 +399,6 @@ export default function InvoiceGenerator() {
 
         {/* Terms & Conditions & Signatory Footer */}
         <div className="flex justify-between items-end p-3 gap-4">
-          {/* Terms & Conditions directly under Total Amount in Words */}
           <div className="flex-1 pr-4">
             <div className="font-bold underline text-xs mb-1">Terms & conditions</div>
             <ol
@@ -372,9 +412,8 @@ export default function InvoiceGenerator() {
             </ol>
           </div>
 
-          {/* Authorised Signatory Right Side */}
           <div className="text-right space-y-8 shrink-0">
-            <div className="font-bold text-xs">For : BUSINESS NAME</div>
+            <div className="font-bold text-xs">For : {businessName}</div>
             <div className="border-t border-black pt-1 text-[11px] font-semibold">Authorised Signatory</div>
           </div>
         </div>
