@@ -46,9 +46,81 @@ export default function TaxInvoiceGenerator() {
     { id: "2", description: "UI/UX Design Concept", hsnCode: "998313", qty: 1, rate: 500 },
   ]);
 
-  const handleAddItem = () => {
-    setItems([...items, { id: Date.now().toString(), description: "", hsnCode: "", qty: 1, rate: 0 }]);
-  };
+  const handlePrint = () => {
+  const invoiceElement = document.getElementById("printable-invoice");
+  if (!invoiceElement) return;
+
+  // Create a hidden iframe element
+  const iframe = document.createElement("iframe");
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0px";
+  iframe.style.height = "0px";
+  iframe.style.border = "0";
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentWindow?.document;
+  if (!doc) return;
+
+  // Inject only the invoice HTML and A4 CSS into the clean iframe
+  doc.open();
+  doc.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Invoice</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 210mm;
+            height: 297mm;
+            background: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            overflow: hidden;
+          }
+          #print-wrapper {
+            width: 210mm;
+            height: 297mm;
+            padding: 8mm 10mm;
+            box-sizing: border-box;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .print\\:hidden, button {
+            display: none !important;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="print-wrapper">
+          ${invoiceElement.innerHTML}
+        </div>
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.focus();
+              window.print();
+              setTimeout(function() {
+                window.frameElement.remove();
+              }, 1000);
+            }, 300);
+          };
+        </script>
+      </body>
+    </html>
+  `);
+  doc.close();
+};
 
   const handleRemoveItem = (id: string) => {
     if (items.length > 1) setItems(items.filter((item) => item.id !== id));
@@ -119,9 +191,9 @@ export default function TaxInvoiceGenerator() {
       </div>
 
       {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
-      <div
+     <div
   id="printable-invoice"
-  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] h-[297mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
+  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full h-[280mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
 >
         <div>
           {/* Header Banner */}
