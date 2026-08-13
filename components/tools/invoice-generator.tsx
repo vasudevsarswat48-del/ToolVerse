@@ -45,6 +45,18 @@ export default function TaxInvoiceGenerator() {
     { id: "1", description: "Web Development Services", hsnCode: "998314", qty: 1, rate: 1000 },
     { id: "2", description: "UI/UX Design Concept", hsnCode: "998313", qty: 1, rate: 500 },
   ]);
+  const handleAddItem = () => {
+  setItems([
+    ...items,
+    {
+      id: Date.now().toString(),
+      description: "",
+      hsnCode: "",
+      qty: 1,
+      rate: 0,
+    },
+  ]);
+};
 
   const handlePrint = () => {
   const invoiceElement = document.getElementById("printable-invoice");
