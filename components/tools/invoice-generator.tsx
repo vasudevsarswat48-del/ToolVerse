@@ -120,9 +120,9 @@ export default function TaxInvoiceGenerator() {
 
       {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
       <div
-        id="printable-invoice"
-        className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] h-[297mm] max-h-[297mm] box-border p-6 mx-auto flex flex-col justify-between overflow-hidden"
-      >
+  id="printable-invoice"
+  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] h-[297mm] p-6 mx-auto flex flex-col justify-between box-border overflow-hidden"
+>
         <div>
           {/* Header Banner */}
           <div className="bg-[#0b2545] text-white flex justify-between items-center px-4 py-2 border-b-2 border-black font-bold text-sm">
@@ -236,9 +236,12 @@ export default function TaxInvoiceGenerator() {
                       {currency}{amount.toFixed(2)}
                     </td>
                     <td className="p-1 text-center no-print">
-                      <button onClick={() => handleRemoveItem(item.id)} className="text-red-500">
-                        <Trash2 className="w-3 h-3" />
-                      </button>
+                      <button
+                             onClick={() => removeItem(index)}
+                             className="text-red-500 hover:text-red-700 print:hidden"
+                             >
+                            <Trash2 className="w-4 h-4" />
+                            </button>
                     </td>
                   </tr>
                 );
