@@ -65,6 +65,19 @@ import WordToPdf from "@/components/tools/word-to-pdf";
 import ExcelToPdf from "@/components/tools/excel-to-pdf";
 import EmiCalculator from "@/components/tools/emi-calculator";
 import FuelCalculator from "@/components/tools/fuel-calculator";
+// some more2
+import PdfOrganizer from "@/components/tools/pdf-organizer";
+import PdfMetadataEditor from "@/components/tools/pdf-metadata";
+import BgRemover from "@/components/tools/bg-remover";
+import ImageToBase64 from "@/components/tools/image-to-base64";
+import MemeGenerator from "@/components/tools/meme-generator";
+import ColorPalette from "@/components/tools/color-palette";
+import ExifViewer from "@/components/tools/exif-viewer";
+import UnitConverter from "@/components/tools/unit-converter";
+import PasswordChecker from "@/components/tools/password-checker";
+import RandomGenerator from "@/components/tools/random-generator";
+import BarcodeGenerator from "@/components/tools/barcode-generator";
+import JsonDiff from "@/components/tools/json-diff";
 
 const toolComponents: Record<string, React.ReactNode> = {
   // Existing Tools
@@ -130,6 +143,19 @@ const toolComponents: Record<string, React.ReactNode> = {
   "excel-to-pdf": <ExcelToPdf />,
   "emi-calculator": <EmiCalculator />,
   "fuel-calculator": <FuelCalculator />,
+  // some more2
+  "pdf-organizer": PdfOrganizer />,
+  "pdf-metadata": PdfMetadataEditor />,
+  "bg-remover": BgRemover />,
+  "image-to-base64": ImageToBase64 />,
+  "meme-generator": MemeGenerator />,
+  "color-palette": ColorPalette />,
+  "exif-viewer": ExifViewer />,
+  "unit-converter": UnitConverter />,
+  "password-checker": PasswordChecker />,
+  "random-generator": RandomGenerator />,
+  "barcode-generator": BarcodeGenerator />,
+  "json-diff": JsonDiff />,
 };
 
 export default async function ToolPage({
