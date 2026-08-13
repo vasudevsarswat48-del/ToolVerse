@@ -3,10 +3,23 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { ALL_TOOLS } from "@/lib/constants/tools";
-import { ArrowRight, Zap, ShieldCheck, Cpu, Sparkles, Search } from "lucide-react";
+import {
+  ArrowRight,
+  Zap,
+  ShieldCheck,
+  Cpu,
+  Sparkles,
+  Search,
+  MessageSquare,
+  Send,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const filteredTools = useMemo(() => {
     if (!searchQuery.trim()) return ALL_TOOLS;
@@ -18,13 +31,27 @@ export default function Home() {
     );
   }, [searchQuery]);
 
+  const handleFeedbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feedback.trim()) return;
+
+    setIsSending(true);
+    // Simulate API request delay
+    setTimeout(() => {
+      setIsSending(false);
+      setIsSubmitted(true);
+      setFeedback("");
+      setTimeout(() => setIsSubmitted(false), 5000); // Reset success message after 5s
+    }, 600);
+  };
+
   return (
     <div className="min-h-screen bg-[#070913] text-slate-100 selection:bg-cyan-500 selection:text-white relative overflow-hidden">
       {/* Background Neon Orbs */}
       <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-tr from-indigo-600/20 via-purple-600/20 to-cyan-500/20 blur-[120px] pointer-events-none rounded-full" />
 
       <div className="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        {/* Hero Banner Section with Prominent Heading */}
+        {/* Hero Banner Section */}
         <div className="text-center max-w-4xl mx-auto mb-20 space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400">
             <Sparkles className="w-3.5 h-3.5 animate-pulse text-cyan-400" />
@@ -109,8 +136,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* Bottommost Section: Detailed description & Feature boxes */}
-        <div className="border-t border-slate-800/80 pt-16 pb-12 text-center max-w-4xl mx-auto space-y-10">
+        {/* Feature Highlights Section */}
+        <div className="border-t border-slate-800/80 pt-16 text-center max-w-4xl mx-auto space-y-10">
           <p className="text-slate-300 text-base lg:text-lg leading-relaxed font-normal">
             An elite collection of lightning-fast developer utilities, data formatters, and precision document tools engineered for peak productivity.
           </p>
@@ -130,6 +157,50 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Interactive Feedback Section */}
+        <div className="mt-20 pt-10 border-t border-slate-800/80 max-w-2xl mx-auto">
+          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl text-center space-y-4">
+            <div className="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center mx-auto">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-white font-[family-name:var(--font-outfit)]">
+                Have Feedback or Tool Suggestions?
+              </h3>
+              <p className="text-xs text-slate-400 mt-1">
+                Help us improve ToolVerse or request a new developer tool.
+              </p>
+            </div>
+
+            {isSubmitted ? (
+              <div className="flex items-center justify-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-3 rounded-xl text-xs font-semibold animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4" /> Thank you! Your feedback has been received.
+              </div>
+            ) : (
+              <form onSubmit={handleFeedbackSubmit} className="space-y-3">
+                <textarea
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  placeholder="Share your thoughts, report an issue, or request a feature..."
+                  rows={3}
+                  className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500 text-slate-200 placeholder-slate-500 text-xs rounded-xl p-3 outline-none transition-colors resize-none"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={isSending}
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto mx-auto px-6 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all disabled:opacity-50"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  {isSending ? "Sending..." : "Submit Feedback"}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+
       </div>
     </div>
   );
