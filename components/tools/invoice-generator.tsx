@@ -92,7 +92,7 @@ export default function TaxInvoiceGenerator() {
             margin: 0 !important;
             padding: 0 !important;
             width: 210mm;
-            height: 297mm;
+            height: 275mm;
             background: #ffffff !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
@@ -100,7 +100,7 @@ export default function TaxInvoiceGenerator() {
           }
           #print-wrapper {
             width: 210mm;
-            height: 297mm;
+            height: 275mm;
             padding: 8mm 10mm;
             box-sizing: border-box;
             background: #ffffff;
