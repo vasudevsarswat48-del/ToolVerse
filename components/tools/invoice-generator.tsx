@@ -222,200 +222,205 @@ const handleRemoveTerm = (index: number) => {
       </div>
 
       {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
-     <div
+    <div
   id="printable-invoice"
-  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full h-[255mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
+  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full max-h-[280mm] p-4 mx-auto flex flex-col justify-between box-border overflow-hidden"
 >
-        <div>
-          {/* Header Banner */}
-          <div className="bg-[#0b2545] text-white flex justify-between items-center px-4 py-2 border-b-2 border-black font-bold text-sm">
-            <span>TAX INVOICE</span>
-            <div className="text-right text-xs space-y-0.5">
-              <div>INVOICE NO : <input value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className="bg-transparent text-white font-mono w-16 focus:outline-none" /></div>
-              <div>DATE : <input value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} className="bg-transparent text-white w-24 focus:outline-none" /></div>
-            </div>
-          </div>
-
-          {/* Business Header */}
-          <div className="text-center py-3 border-b-2 border-black space-y-0.5">
-            <input
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
-              className="text-xl font-extrabold text-center uppercase tracking-wide w-full focus:outline-none"
-            />
-            <input
-              value={businessAddress}
-              onChange={(e) => setBusinessAddress(e.target.value)}
-              className="text-center w-full focus:outline-none text-slate-700"
-            />
-            <div className="flex justify-center gap-4 text-[11px] text-slate-800 font-semibold pt-0.5">
-              <span>GSTIN: <input value={gstin} onChange={(e) => setGstin(e.target.value)} className="w-24 focus:outline-none" /></span>
-              <span>Email: <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-32 focus:outline-none" /></span>
-              <span>PAN NO: <input value={pan} onChange={(e) => setPan(e.target.value)} className="w-24 focus:outline-none" /></span>
-            </div>
-          </div>
-
-          {/* Bill To & Dynamic Payment Status */}
-          <div className="grid grid-cols-2 border-b-2 border-black min-h-[110px]">
-            <div className="p-2 border-r-2 border-black space-y-0.5">
-              <span className="font-bold text-black uppercase block">Bill To:</span>
-              <input value={clientName} onChange={(e) => setClientName(e.target.value)} className="font-semibold w-full uppercase focus:outline-none" />
-              <textarea value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} className="w-full h-10 resize-none focus:outline-none text-slate-700" />
-              <div className="text-slate-800">Email: <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-40 focus:outline-none" /></div>
-              <div className="text-slate-800">GSTIN: <input value={clientGstin} onChange={(e) => setClientGstin(e.target.value)} className="w-36 focus:outline-none" /></div>
-            </div>
-
-            <div className="p-2 bg-[#d8ecf8] space-y-2 flex flex-col justify-between">
-              <div className="space-y-1.5">
-                <div>
-                  <span className="font-semibold">Payment Due Date: </span>
-                  <input value={paymentDueDate} onChange={(e) => setPaymentDueDate(e.target.value)} className="bg-transparent focus:outline-none" />
-                </div>
-                <div>
-                  <span className="font-semibold">Payment Mode: </span>
-                  <input value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="bg-transparent focus:outline-none w-48" placeholder="e.g. Cash, UPI, Net Banking" />
-                </div>
-              </div>
-
-              {/* Status Tag */}
-              <div className="flex items-center gap-2 pt-1 border-t border-slate-300">
-                <span className="font-semibold">Status:</span>
-                <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded ${statusBgColor}`}>
-                  {paymentStatus}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Line Items Table */}
-          <table className="w-full border-collapse border-b-2 border-black">
-            <thead>
-              <tr className="border-b-2 border-black text-left font-bold bg-slate-50">
-                <th className="p-2 border-r-2 border-black">Description</th>
-                <th className="p-2 border-r-2 border-black text-center w-24">HSN Code</th>
-                <th className="p-2 border-r-2 border-black text-center w-16">Qty</th>
-                <th className="p-2 border-r-2 border-black text-right w-24">Rate</th>
-                <th className="p-2 text-right w-28">Amount</th>
-                <th className="p-1 w-6 no-print"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y border-black">
-              {items.map((item) => {
-                const amount = (Number(item.qty) || 0) * (Number(item.rate) || 0);
-                return (
-                  <tr key={item.id} className="align-top">
-                    <td className="p-1.5 border-r-2 border-black">
-                      <input
-                        value={item.description}
-                        onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
-                        className="w-full focus:outline-none"
-                        placeholder="Item name..."
-                      />
-                    </td>
-                    <td className="p-2 border-r-2 border-black text-center">
-                      <input
-                        value={item.hsnCode}
-                        onChange={(e) => handleItemChange(item.id, "hsnCode", e.target.value)}
-                        className="w-full text-center focus:outline-none"
-                      />
-                    </td>
-                    <td className="p-2 border-r-2 border-black text-center">
-                      <input
-                        type="number"
-                        value={item.qty || ""}
-                        onChange={(e) => handleItemChange(item.id, "qty", Number(e.target.value))}
-                        className="w-full text-center focus:outline-none"
-                      />
-                    </td>
-                    <td className="p-2 border-r-2 border-black text-right">
-                      <input
-                        type="number"
-                        value={item.rate || ""}
-                        onChange={(e) => handleItemChange(item.id, "rate", Number(e.target.value))}
-                        className="w-full text-right focus:outline-none"
-                      />
-                    </td>
-                    <td className="p-2 text-right font-mono font-medium">
-                      {currency}{amount.toFixed(2)}
-                    </td>
-                    <td className="p-1 text-center no-print">
-                      <button
-                            onClick={() => handleRemoveItem(item.id)}
-                             className="text-red-500 hover:text-red-700 print:hidden"
-                             >
-                            <Trash2 className="w-4 h-4" />
-                            </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          {/* Tax & Payment Adjustments Block */}
-          <div className="grid grid-cols-2 border-b-2 border-black">
-            <div className="p-2 border-r-2 border-black space-y-1">
-              <span className="font-bold underline block">Terms & conditions</span>
-              <ol className="list-decimal list-inside space-y-0.5 text-[11px] text-slate-700">
-                <li>Goods once sold will not be taken back.</li>
-                <li>Interest @18% p.a. charged if bill unpaid after due date.</li>
-                <li>Subject to local jurisdiction.</li>
-              </ol>
-            </div>
-
-            <div className="divide-y border-black font-semibold bg-[#d8ecf8]">
-              <div className="flex justify-between p-1.5">
-                <span>Total Subtotal:</span>
-                <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between p-1.5">
-                <span>Add : CGST @ {cgstRate}%</span>
-                <span className="font-mono">{currency}{cgstAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between p-1.5">
-                <span>Add : SGST @ {sgstRate}%</span>
-                <span className="font-mono">{currency}{sgstAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between p-1.5 bg-blue-100/50">
-                <span>Balance Received :</span>
-                <div className="flex items-center">
-                  <span className="font-mono mr-1">{currency}</span>
-                  <input
-                    type="number"
-                    value={balanceReceived || ""}
-                    onChange={(e) => setBalanceReceived(Number(e.target.value))}
-                    className="w-20 text-right bg-transparent border-b border-black focus:outline-none font-mono font-bold text-emerald-800"
-                    placeholder="0.00"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between p-1.5 bg-amber-100/50">
-                <span>Balance Due :</span>
-                <span className="font-mono font-bold text-red-700">{currency}{balanceDue.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between p-2 bg-[#0b2545] text-white font-bold text-sm">
-                <span>Grand Total</span>
-                <span className="font-mono">{currency}{grandTotal.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Total Amount in Words */}
-          <div className="p-2 border-b-2 border-black italic font-bold">
-            Total Amount ({currency} - In Words) : <span className="font-normal uppercase underline">Rupees {grandTotal.toFixed(2)} Only</span>
-          </div>
-        </div>
-
-        {/* Footer Authorised Signatory */}
-        <div className="pt-12 flex justify-between items-end border-t-2 border-black mt-8">
-          <div className="font-bold">
-            For : <span className="uppercase">{businessName}</span>
-          </div>
-          <div className="text-right font-bold pt-8">
-            <p className="border-t border-black pt-1 px-4 inline-block">Authorised Signatory</p>
-          </div>
-        </div>
+  {/* Header Banner */}
+  <div className="bg-[#0b2545] text-white flex justify-between items-center px-4 py-2 border-b-2 border-black font-bold text-sm">
+    <span>TAX INVOICE</span>
+    <div className="text-right text-xs flex gap-4">
+      <div>
+        <span>INVOICE NO : </span>
+        <input
+          value={invoiceNo}
+          onChange={(e) => setInvoiceNo(e.target.value)}
+          className="bg-transparent text-white font-mono w-20 focus:outline-none"
+        />
+      </div>
+      <div>
+        <span>DATE : </span>
+        <input
+          value={invoiceDate}
+          onChange={(e) => setInvoiceDate(e.target.value)}
+          className="bg-transparent text-white font-mono w-24 focus:outline-none"
+        />
       </div>
     </div>
-  );
+  </div>
+
+  {/* Business Header */}
+  <div className="text-center py-2 border-b-2 border-black space-y-0.5">
+    <div className="text-lg font-bold uppercase">BUSINESS NAME</div>
+    <div className="text-xs text-gray-700">132 Street, City, State, PIN</div>
+    <div className="flex justify-center gap-6 text-[11px] pt-1">
+      <div><span className="font-semibold">GSTIN:</span> AAA213465</div>
+      <div><span className="font-semibold">Email:</span> 122@gmail.com</div>
+      <div><span className="font-semibold">PAN NO:</span> AAA132456</div>
+    </div>
+  </div>
+
+  {/* Bill To & Payment Info */}
+  <div className="grid grid-cols-2 border-b-2 border-black">
+    <div className="p-2 border-r-2 border-black space-y-1">
+      <div className="font-bold underline">BILL TO:</div>
+      <input
+        value={clientName}
+        onChange={(e) => setClientName(e.target.value)}
+        className="w-full font-bold uppercase bg-transparent focus:outline-none"
+        placeholder="PARTY'S NAME"
+      />
+      <textarea
+        value={clientAddress}
+        onChange={(e) => setClientAddress(e.target.value)}
+        className="w-full bg-transparent focus:outline-none resize-none text-[11px]"
+        rows={2}
+        placeholder="132 STREET, CITY, STATE - 132456"
+      />
+    </div>
+    <div className="p-2 space-y-1 bg-gray-50/50">
+      <div>
+        <span className="font-semibold">Payment Due Date: </span>
+        <input
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          className="bg-transparent focus:outline-none"
+        />
+      </div>
+      <div>
+        <span className="font-semibold">Payment Mode: </span>
+        <input
+          value={paymentMode}
+          onChange={(e) => setPaymentMode(e.target.value)}
+          className="bg-transparent focus:outline-none w-48"
+        />
+      </div>
+    </div>
+  </div>
+
+  {/* Items Table */}
+  <table className="w-full border-b-2 border-black text-left">
+    <thead>
+      <tr className="border-b-2 border-black bg-gray-100 font-bold">
+        <th className="p-1.5 border-r-2 border-black">Description</th>
+        <th className="p-1.5 border-r-2 border-black w-24 text-center">HSN Code</th>
+        <th className="p-1.5 border-r-2 border-black w-16 text-center">Qty</th>
+        <th className="p-1.5 border-r-2 border-black w-24 text-right">Rate</th>
+        <th className="p-1.5 w-28 text-right">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {items.map((item) => (
+        <tr key={item.id} className="border-b border-gray-300">
+          <td className="p-1.5 border-r-2 border-black">
+            <input
+              value={item.description}
+              onChange={(e) => handleItemChange(item.id, "description", e.target.value)}
+              className="w-full bg-transparent focus:outline-none"
+            />
+          </td>
+          <td className="p-1.5 border-r-2 border-black text-center">
+            <input
+              value={item.hsnCode}
+              onChange={(e) => handleItemChange(item.id, "hsnCode", e.target.value)}
+              className="w-full text-center bg-transparent focus:outline-none"
+            />
+          </td>
+          <td className="p-1.5 border-r-2 border-black text-center">
+            <input
+              type="number"
+              value={item.qty}
+              onChange={(e) => handleItemChange(item.id, "qty", Number(e.target.value))}
+              className="w-full text-center bg-transparent focus:outline-none"
+            />
+          </td>
+          <td className="p-1.5 border-r-2 border-black text-right">
+            <input
+              type="number"
+              value={item.rate}
+              onChange={(e) => handleItemChange(item.id, "rate", Number(e.target.value))}
+              className="w-full text-right bg-transparent focus:outline-none"
+            />
+          </td>
+          <td className="p-1.5 text-right font-mono font-medium">
+            {currency}{(item.qty * item.rate).toFixed(2)}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  {/* Totals & Terms Footer */}
+  <div className="grid grid-cols-2 pt-2 gap-4 items-start">
+    {/* Editable Terms & Conditions */}
+    <div>
+      <div className="font-bold underline text-xs mb-1">Terms & conditions</div>
+      <ol
+        contentEditable
+        suppressContentEditableWarning
+        className="list-decimal list-inside text-[10px] space-y-0.5 outline-none focus:bg-yellow-50/50 p-1 rounded"
+      >
+        <li>Goods once sold will not be taken back.</li>
+        <li>Interest @18% p.a. charged if bill unpaid after due date.</li>
+        <li>Subject to local jurisdiction.</li>
+      </ol>
+    </div>
+
+    {/* Totals with Editable CGST & SGST Percentages */}
+    <div className="border-l-2 border-black pl-4 space-y-1 text-right">
+      <div className="flex justify-between border-b pb-1">
+        <span className="font-semibold">Total Subtotal:</span>
+        <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
+      </div>
+
+      {/* Editable CGST % Input */}
+      <div className="flex justify-between border-b pb-1 items-center">
+        <span className="font-semibold flex items-center gap-1">
+          Add : CGST @
+          <input
+            type="number"
+            value={cgstRate}
+            onChange={(e) => setCgstRate(Number(e.target.value))}
+            className="w-10 text-center font-bold bg-transparent border-b border-dashed border-gray-400 focus:outline-none focus:border-black"
+          />
+          %
+        </span>
+        <span className="font-mono">{currency}{cgstAmount.toFixed(2)}</span>
+      </div>
+
+      {/* Editable SGST % Input */}
+      <div className="flex justify-between border-b pb-1 items-center">
+        <span className="font-semibold flex items-center gap-1">
+          Add : SGST @
+          <input
+            type="number"
+            value={sgstRate}
+            onChange={(e) => setSgstRate(Number(e.target.value))}
+            className="w-10 text-center font-bold bg-transparent border-b border-dashed border-gray-400 focus:outline-none focus:border-black"
+          />
+          %
+        </span>
+        <span className="font-mono">{currency}{sgstAmount.toFixed(2)}</span>
+      </div>
+
+      <div className="flex justify-between font-bold text-sm bg-black text-white p-1.5 mt-2">
+        <span>Grand Total</span>
+        <span className="font-mono">{currency}{grandTotal.toFixed(2)}</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Signatory Footer */}
+  <div className="flex justify-between items-end pt-4 border-t-2 border-black mt-2">
+    <div className="font-semibold text-[11px]">
+      Total Amount (₹ - In Words) : <span className="underline italic font-bold">RUPEES {grandTotal.toFixed(2)} ONLY</span>
+    </div>
+    <div className="text-right space-y-6">
+      <div className="font-bold text-xs">For : BUSINESS NAME</div>
+      <div className="border-t border-black pt-1 text-[11px] font-semibold">Authorised Signatory</div>
+    </div>
+  </div>
+</div>
+);
 }
+      
