@@ -1,45 +1,128 @@
 "use client";
 
-import React, { useState } from "react";
-import { Ruler } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { UNIT_CATEGORIES, convertUnit } from "@/lib/constants/units";
+import { ArrowLeftRight, Copy, Check } from "lucide-react";
 
 export default function UnitConverter() {
-  const [val, setVal] = useState<number>(1);
-  const [type, setType] = useState<"length" | "weight">("length");
+  const categoryKeys = Object.keys(UNIT_CATEGORIES);
 
-  const meters = val;
-  const feet = (val * 3.28084).toFixed(2);
-  const inches = (val * 39.3701).toFixed(2);
-  const km = (val / 1000).toFixed(4);
+  const [category, setCategory] = useState("temperature");
+  const [amount, setAmount] = useState<string>("1");
+
+  const availableUnits = Object.keys(UNIT_CATEGORIES[category].units);
+  const [fromUnit, setFromUnit] = useState<string>(availableUnits[0]);
+  const [toUnit, setToUnit] = useState<string>(availableUnits[1] || availableUnits[0]);
+  const [copied, setCopied] = useState(false);
+
+  // Handle category switch and set valid initial units
+  const handleCategoryChange = (newCat: string) => {
+    setCategory(newCat);
+    const units = Object.keys(UNIT_CATEGORIES[newCat].units);
+    setFromUnit(units[0]);
+    setToUnit(units[1] || units[0]);
+  };
+
+  const convertedValue = useMemo(() => {
+    const num = parseFloat(amount);
+    if (isNaN(num)) return "0";
+    const res = convertUnit(num, fromUnit, toUnit, category);
+    return Number.isInteger(res) ? res.toString() : res.toFixed(6).replace(/\.?0+$/, "");
+  }, [amount, fromUnit, toUnit, category]);
+
+  const handleSwap = () => {
+    setFromUnit(toUnit);
+    setToUnit(fromUnit);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(convertedValue);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-      <div className="pb-4 border-b border-slate-800">
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          <Ruler className="w-5 h-5 text-blue-400" /> Unit Converter
-        </h2>
-        <p className="text-xs text-slate-400">Convert standard length and metric measurements.</p>
+    <div className="max-w-3xl mx-auto p-6 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl space-y-6">
+      {/* Category Select Tabs */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        {categoryKeys.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => handleCategoryChange(cat)}
+            className={`px-4 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
+              category === cat
+                ? "bg-cyan-500 text-slate-950 font-bold"
+                : "bg-slate-950 text-slate-400 hover:text-white"
+            }`}
+          >
+            {UNIT_CATEGORIES[cat].name}
+          </button>
+        ))}
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">Value (Meters)</label>
-          <input type="number" value={val} onChange={(e) => setVal(Number(e.target.value))} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-100 focus:outline-none" />
+      {/* Main Conversion Interface */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+        {/* From Section */}
+        <div className="md:col-span-2 space-y-2">
+          <label className="text-xs font-medium text-slate-400">From</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl outline-none focus:border-cyan-500 text-sm font-mono"
+            placeholder="0"
+          />
+          <select
+            value={fromUnit}
+            onChange={(e) => setFromUnit(e.target.value)}
+            className="w-full bg-slate-950 border border-slate-800 text-slate-200 p-2.5 rounded-xl outline-none focus:border-cyan-500 text-xs"
+          >
+            {availableUnits.map((u) => (
+              <option key={u} value={u}>
+                {UNIT_CATEGORIES[category].units[u].name}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 text-xs">
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block">Feet</span>
-            <span className="font-bold text-slate-200">{feet} ft</span>
+        {/* Swap Button */}
+        <div className="flex justify-center md:pt-6">
+          <button
+            onClick={handleSwap}
+            className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-400 transition-colors"
+          >
+            <ArrowLeftRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* To Section */}
+        <div className="md:col-span-2 space-y-2">
+          <label className="text-xs font-medium text-slate-400">To</label>
+          <div className="relative">
+            <input
+              type="text"
+              readOnly
+              value={convertedValue}
+              className="w-full bg-slate-950/50 border border-slate-800 text-cyan-400 font-bold p-3 rounded-xl outline-none text-sm font-mono pr-10"
+            />
+            <button
+              onClick={handleCopy}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+            >
+              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+            </button>
           </div>
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block">Inches</span>
-            <span className="font-bold text-slate-200">{inches} in</span>
-          </div>
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block">Kilometers</span>
-            <span className="font-bold text-slate-200">{km} km</span>
-          </div>
+          <select
+            value={toUnit}
+            onChange={(e) => setToUnit(e.target.value)}
+            className="w-full bg-slate-950 border border-slate-800 text-slate-200 p-2.5 rounded-xl outline-none focus:border-cyan-500 text-xs"
+          >
+            {availableUnits.map((u) => (
+              <option key={u} value={u}>
+                {UNIT_CATEGORIES[category].units[u].name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </div>
