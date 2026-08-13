@@ -121,7 +121,7 @@ export default function TaxInvoiceGenerator() {
       {/* ─── EXACT A4 TAX INVOICE FORM ─── */}
       <div
   id="printable-invoice"
-  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] h-[297mm] p-6 mx-auto flex flex-col justify-between box-border overflow-hidden"
+  className="bg-white text-black font-sans text-xs border-2 border-black w-[210mm] max-w-full h-[285mm] p-5 mx-auto flex flex-col justify-between box-border overflow-hidden"
 >
         <div>
           {/* Header Banner */}
