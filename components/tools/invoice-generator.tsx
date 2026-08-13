@@ -237,7 +237,7 @@ export default function TaxInvoiceGenerator() {
                     </td>
                     <td className="p-1 text-center no-print">
                       <button
-                             onClick={() => removeItem(index)}
+                            onClick={() => handleRemoveItem(item.id)}
                              className="text-red-500 hover:text-red-700 print:hidden"
                              >
                             <Trash2 className="w-4 h-4" />
