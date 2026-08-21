@@ -51,8 +51,7 @@ async function recompressImages(pdfDoc: PDFDocument, quality: number) {
       try {
         const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
-const url = URL.createObjectURL(blob);
-      setConvertedPdfUrl(url);
+
         const bitmap = await createImageBitmap(blob);
         const canvas = document.createElement("canvas");
         canvas.width = bitmap.width;
