@@ -50,7 +50,7 @@ async function recompressImages(pdfDoc: PDFDocument, quality: number) {
 
       try {
         const bytes = obj.getContents();
-        const blob = new Blob([bytes], { type: "image/jpeg" });
+       const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
         const bitmap = await createImageBitmap(blob);
         const canvas = document.createElement("canvas");
         canvas.width = bitmap.width;
