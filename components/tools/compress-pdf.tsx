@@ -20,6 +20,19 @@ function formatBytes(bytes: number): string {
 }
 
 /**
+ * pdf-lib's `save()` returns a Uint8Array typed against a generic
+ * ArrayBufferLike, which TS's DOM lib types don't always accept directly
+ * as a BlobPart (this is what throws the "Uint8Array<ArrayBufferLike>
+ * is not assignable to BlobPart" error). Copying the bytes into a fresh
+ * plain ArrayBuffer-backed Uint8Array sidesteps the mismatch entirely.
+ */
+function toBlob(bytes: Uint8Array, mimeType: string): Blob {
+  const copy = new Uint8Array(bytes.length);
+  copy.set(bytes);
+  return new Blob([copy.buffer], { type: mimeType });
+}
+
+/**
  * Re-encodes embedded JPEG (DCTDecode) images at a lower quality via canvas.
  * This is what actually shrinks file size — saving with useObjectStreams
  * alone barely helps if the PDF has photos in it.
@@ -49,9 +62,8 @@ async function recompressImages(pdfDoc: PDFDocument, quality: number) {
       if (!filterName.includes("DCTDecode")) continue; // only handles JPEGs
 
       try {
-        const pdfBytes = await pdfDoc.save();
-const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
-
+        const bytes = obj.getContents();
+        const blob = toBlob(bytes, "image/jpeg");
         const bitmap = await createImageBitmap(blob);
         const canvas = document.createElement("canvas");
         canvas.width = bitmap.width;
@@ -97,7 +109,7 @@ export default function CompressPdf() {
       await recompressImages(pdfDoc, LEVEL_QUALITY[level]);
 
       const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-      const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
+      const blob = toBlob(pdfBytes, "application/pdf");
 
       setResult({ original: originalSize, compressed: blob.size });
 
