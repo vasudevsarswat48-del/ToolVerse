@@ -49,8 +49,10 @@ async function recompressImages(pdfDoc: PDFDocument, quality: number) {
       if (!filterName.includes("DCTDecode")) continue; // only handles JPEGs
 
       try {
-        const bytes = obj.getContents();
-       const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
+        const pdfBytes = await pdfDoc.save();
+const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
+const url = URL.createObjectURL(blob);
+      setConvertedPdfUrl(url);
         const bitmap = await createImageBitmap(blob);
         const canvas = document.createElement("canvas");
         canvas.width = bitmap.width;
