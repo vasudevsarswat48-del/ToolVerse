@@ -39,6 +39,7 @@ export default function RootLayout({
       }}
     />
    <meta name="google-site-verification" content="qSYK0lXMzgnj8mqTSpttWAPSK8jzxe8_x7EWCZ25SVE" />
+        <link rel="icon" type="image/x-icon" href="/favicon.svg" />
   </head>
       <body className="font-sans antialiased bg-[#070913] text-slate-100 min-h-screen">
         <Navbar />
