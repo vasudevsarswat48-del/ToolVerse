@@ -6,9 +6,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Brand Logo with Cursive Name */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            TL
-          </div>
+          <img
+            src="/favicon.svg"
+            alt="Toolingo"
+            className="w-11 h-11 rounded-2xl shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform"
+          />
           <span className="text-3xl font-bold font-[family-name:var(--font-cursive)] bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
             Toolingo
           </span>
