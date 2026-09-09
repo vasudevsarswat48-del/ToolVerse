@@ -42,87 +42,107 @@ export default function UnitConverter() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl space-y-6">
-      {/* Category Select Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {categoryKeys.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleCategoryChange(cat)}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
-              category === cat
-                ? "bg-cyan-500 text-slate-950 font-bold"
-                : "bg-slate-950 text-slate-400 hover:text-white"
-            }`}
-          >
-            {UNIT_CATEGORIES[cat].name}
-          </button>
-        ))}
+    <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      {/* Sidebar: category list */}
+      <div className="md:w-60 shrink-0 bg-slate-950/60 border-b md:border-b-0 md:border-r border-slate-800 p-4">
+        <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible pb-2 md:pb-0 scrollbar-thin">
+          {categoryKeys.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategoryChange(cat)}
+              className={`px-4 py-2.5 text-sm font-semibold rounded-xl whitespace-nowrap text-left transition-all ${
+                category === cat
+                  ? "bg-cyan-500 text-slate-950 font-bold"
+                  : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              {UNIT_CATEGORIES[cat].name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Main Conversion Interface */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-        {/* From Section */}
-        <div className="md:col-span-2 space-y-2">
-          <label className="text-xs font-medium text-slate-400">From</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl outline-none focus:border-cyan-500 text-sm font-mono"
-            placeholder="0"
-          />
-          <select
-            value={fromUnit}
-            onChange={(e) => setFromUnit(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 text-slate-200 p-2.5 rounded-xl outline-none focus:border-cyan-500 text-xs"
-          >
-            {availableUnits.map((u) => (
-              <option key={u} value={u}>
-                {UNIT_CATEGORIES[category].units[u].name}
-              </option>
-            ))}
-          </select>
+      {/* Main panel */}
+      <div className="flex-1 p-6 md:p-8 space-y-6">
+        {/* Top title bar */}
+        <div className="bg-cyan-500 text-slate-950 font-bold text-center tracking-widest text-lg py-3 rounded-xl">
+          UNIT CONVERTER
         </div>
 
-        {/* Swap Button */}
-        <div className="flex justify-center md:pt-6">
-          <button
-            onClick={handleSwap}
-            className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-400 transition-colors"
-          >
-            <ArrowLeftRight className="w-4 h-4" />
-          </button>
-        </div>
+        <h2 className="text-2xl font-bold text-white">
+          Convert {UNIT_CATEGORIES[category].name}
+        </h2>
 
-        {/* To Section */}
-        <div className="md:col-span-2 space-y-2">
-          <label className="text-xs font-medium text-slate-400">To</label>
-          <div className="relative">
-            <input
-              type="text"
-              readOnly
-              value={convertedValue}
-              className="w-full bg-slate-950/50 border border-slate-800 text-cyan-400 font-bold p-3 rounded-xl outline-none text-sm font-mono pr-10"
-            />
+        {/* From panel */}
+        <div className="border border-slate-800 rounded-xl overflow-hidden">
+          <div className="flex items-center justify-between bg-slate-800 px-4 py-2.5">
+            <span className="text-sm font-semibold text-slate-200">From</span>
             <button
-              onClick={handleCopy}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              onClick={handleSwap}
+              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              title="Swap units"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              <ArrowLeftRight className="w-4 h-4" />
             </button>
           </div>
-          <select
-            value={toUnit}
-            onChange={(e) => setToUnit(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 text-slate-200 p-2.5 rounded-xl outline-none focus:border-cyan-500 text-xs"
-          >
-            {availableUnits.map((u) => (
-              <option key={u} value={u}>
-                {UNIT_CATEGORIES[category].units[u].name}
-              </option>
-            ))}
-          </select>
+          <div className="p-4 flex flex-col sm:flex-row gap-3 bg-slate-900">
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="flex-1 bg-slate-950 border border-slate-800 text-white p-3 rounded-xl outline-none focus:border-cyan-500 text-sm font-mono"
+              placeholder="0"
+            />
+            <select
+              value={fromUnit}
+              onChange={(e) => setFromUnit(e.target.value)}
+              className="sm:w-56 bg-slate-950 border border-slate-800 text-slate-200 p-3 rounded-xl outline-none focus:border-cyan-500 text-sm"
+            >
+              {availableUnits.map((u) => (
+                <option key={u} value={u}>
+                  {UNIT_CATEGORIES[category].units[u].name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* To panel */}
+        <div className="border border-slate-800 rounded-xl overflow-hidden">
+          <div className="bg-slate-800 px-4 py-2.5">
+            <span className="text-sm font-semibold text-slate-200">To</span>
+          </div>
+          <div className="p-4 flex flex-col sm:flex-row gap-3 bg-slate-900">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                readOnly
+                value={convertedValue}
+                className="w-full bg-slate-950/50 border border-slate-800 text-cyan-400 font-bold p-3 rounded-xl outline-none text-sm font-mono pr-10"
+              />
+              <button
+                onClick={handleCopy}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+            <select
+              value={toUnit}
+              onChange={(e) => setToUnit(e.target.value)}
+              className="sm:w-56 bg-slate-950 border border-slate-800 text-slate-200 p-3 rounded-xl outline-none focus:border-cyan-500 text-sm"
+            >
+              {availableUnits.map((u) => (
+                <option key={u} value={u}>
+                  {UNIT_CATEGORIES[category].units[u].name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </div>
