@@ -17,8 +17,8 @@ export default function ContactUs() {
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <p className="text-sm text-slate-600 dark:text-slate-400 mb-8">
         Have questions, feature requests, or bug reports? Send us a message or contact us directly at{" "}
-        <a href="mailto:support@toolingo.com" className="text-blue-600 underline">
-          support@toolingo.com
+        <a href="mailto:vasudevsarswat48@gmail.com" className="text-blue-600 underline">
+          Mail Us
         </a>.
       </p>
 
