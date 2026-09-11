@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import Image from "next/image";
 
 export const Footer = () => {
   return (
@@ -9,7 +9,7 @@ export const Footer = () => {
         {/* Left Section: Logo & Copyright */}
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-accent" />
+            <Image src="/favicon.svg" alt="Toolingo" width={16} height={16} className="w-4 h-4" />
             <span className="font-semibold text-white">Toolingo</span>
           </div>
           <p className="text-xs text-gray-500">
