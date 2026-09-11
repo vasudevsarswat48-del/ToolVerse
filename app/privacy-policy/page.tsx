@@ -39,7 +39,7 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="text-lg font-semibold mb-2 text-slate-900 dark:text-white">4. Contact Information</h2>
           <p>
-            If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at <strong>support@toolingo.com</strong>.
+            If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at <strong>Our Mail</strong>
           </p>
         </section>
       </div>
