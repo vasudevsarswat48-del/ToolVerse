@@ -13,7 +13,7 @@ export const Footer = () => {
             <span className="font-semibold text-white">Toolingo</span>
           </div>
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Toolingo. Built with Next.js & Tailwind CSS. All rights reserved.
+            © {new Date().getFullYear()} Toolingo. All rights reserved.
           </p>
         </div>
 
