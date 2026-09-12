@@ -14,7 +14,7 @@ export default function ContactUs() {
     const formData = new FormData(form);
 
     try {
-      await fetch("/__forms.html", {
+      await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString(),
@@ -33,16 +33,17 @@ export default function ContactUs() {
       <p className="text-sm text-slate-400 mb-8">
         Have questions or feedback? Contact us directly at{" "}
         <a href="mailto:vasudevsarswat48@gmail.com" className="text-blue-400 underline">
-          vasudevsarswat48@gmail.com
+         Our Mail 
         </a>.
       </p>
 
       {submitted ? (
         <div className="bg-emerald-950/50 border border-emerald-500 text-emerald-200 p-4 rounded-lg">
-          Thank you for getting in touch! Your message has been sent to vasudevsarswat48@gmail.com.
+          Thank you for getting in touch! Your message has been sent to us.
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Required for Netlify Form Matching */}
           <input type="hidden" name="form-name" value="contact" />
 
           <div>
