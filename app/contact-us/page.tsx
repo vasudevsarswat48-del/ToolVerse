@@ -4,14 +4,17 @@ import React, { useState } from "react";
 
 export default function ContactUs() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+
     const form = e.currentTarget;
     const formData = new FormData(form);
 
     try {
-      await fetch("/", {
+      await fetch("/__forms.html", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString(),
@@ -19,6 +22,8 @@ export default function ContactUs() {
       setSubmitted(true);
     } catch (error) {
       alert("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,22 +33,16 @@ export default function ContactUs() {
       <p className="text-sm text-slate-400 mb-8">
         Have questions or feedback? Contact us directly at{" "}
         <a href="mailto:vasudevsarswat48@gmail.com" className="text-blue-400 underline">
-          Our Mail
+          vasudevsarswat48@gmail.com
         </a>.
       </p>
 
       {submitted ? (
         <div className="bg-emerald-950/50 border border-emerald-500 text-emerald-200 p-4 rounded-lg">
-          Thank you for getting in touch! Your message has been sent to us.
+          Thank you for getting in touch! Your message has been sent to vasudevsarswat48@gmail.com.
         </div>
       ) : (
-        <form
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          onSubmit={handleSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input type="hidden" name="form-name" value="contact" />
 
           <div>
@@ -81,9 +80,10 @@ export default function ContactUs() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-md text-sm transition-colors"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-md text-sm transition-colors disabled:opacity-50"
           >
-            Send Message
+            {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
       )}
