@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="primary-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#4FACFE" />
+    </linearGradient>
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7F00FF" />
+      <stop offset="100%" stop-color="#E100FF" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Mode Background -->
+  <rect width="64" height="64" rx="14" fill="#090D16" />
+
+  <!-- Main Knife Body -->
+  <rect x="24" y="12" width="16" height="40" rx="8" fill="url(#primary-grad)" />
+
+  <!-- Center Swiss Cross Accent -->
+  <path d="M 32,27 V 37 M 27,32 H 37" stroke="#090D16" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Utility Blades -->
+  <path d="M 38,16 C 52,16 52,28 38,32" fill="none" stroke="url(#accent-grad)" stroke-width="4" stroke-linecap="round" />
+  <path d="M 26,48 C 12,48 12,36 26,32" fill="none" stroke="url(#accent-grad)" stroke-width="4" stroke-linecap="round" />
+</svg>
